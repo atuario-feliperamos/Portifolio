@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Executivo • Comitê de Precificação e Deliberações 2026</title>
-  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=6DVFB-Ii2mUXrKD084zOmy9Iffwl_Bf6cVoihcwwhBCnMHoZuF0T2uBZzsvHe6Oj6FeuFA5URVh7DRMpcSMcesj8zbU2NjIybOG8Tcr8sgJc3ZFDteKengLmfW8TbCfemTAFfa4FSWsu_Hbz9YTSkCFqc2CtwOqnYPFKvxk4ShB6if-BQp6bFrFfXRO1-gyFvMgHkdE-K4lHccHhf_-Alv9xsL7C-1AwcTuTwISUf9NHw9L_EXeJXG3I6O0wCa0ySSVCjWIyumoFIRLzMXN3nL3PpQXkf4Pbo00EBKL23W1I-b54jhKszzkTfOcadaYaaRdXQoHVCKMPLClhVjc1WQ" charset="UTF-8"></script><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=Dy--igglfliNXZoztFdUUr0zByLGXXpHXSKuJmZ68KqNASQvdrHhLxrDWacVfxVAF1tSVIIJSFpPqegsHtvctnk5m9xWBMzN2qvN2oH-bcwa_VZS4iT3sFSxl7djVipF4RDtIFlbWlnhefHxmJ9QLNmQycONtmWS8V2UfL4WOB9G-RPM5UzBWtBKLO8_uNPgmVa6FlW9DyLMSOEpwL9-c5jol98bs4HK21ApM5jC6jNHTOABXreQyMiY-w9GV0sBhoqNkkO8Pi-AYfknolv2-SUeiZ5L273UPyCaRqIolP6vLoccOB_6XpmqDGzb7Gfs0vDpSmPqOyjNCsOL4-UXYA" charset="UTF-8"></script><script src="https://cdn.tailwindcss.com"></script>
+  <title>Comitê Atuarial e Comercial • Painel Executivo 2026</title>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=4P23VGlKzRrEtXpx2tjfpfaHkdKAWDfo8OL5PE2gpcvOTJa578UMc3-xHOHoOpqN-24uCYv1tkXKpBQzwRU8gH8WS6Kp6lpGg9-XcK8Uj7xC_FNXnP0hdbZzzyyTdtWUWoTVFPPmAdvl1Fl-tDigK55doS-U7DFSxr7Hxtes8I4gOrriXghoH1pKRr7VUatOl9p_g4_KqJLtkrZFG8c4T1gBPkqc-GHNee3RA-RRQPfipLLtM3IVNmA1w95JZPyK50kwns_6MlE8sJBUHPe0WChA7vDRsUZhQEyK39k1fCi2KmXwXqYkOTOwxitVBQfSOup43k15CLsZLjJLv-G4iA" charset="UTF-8"></script><script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -288,11 +289,84 @@
     ::-webkit-scrollbar-track { background: var(--scroll-track); }
     ::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 99px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+  
+    #mobileLoadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #FFFFFF;
+      color: #0B192C;
+      transition: opacity 0.25s ease;
+    }
+    .loader-spinner {
+      width: 34px;
+      height: 34px;
+      border: 3.5px solid #DBEAFE;
+      border-top-color: var(--accent, #1D4ED8);
+      border-radius: 9999px;
+      animation: spin 0.75s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+  
+
+    .badge-sin-sim { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
+    .badge-sin-nao { background: #F1F5F9; color: #64748B; border: 1px solid #E2E8F0; }
+
+    .theme-primary-bg { background-color: var(--accent); }
+    .theme-primary-text { color: var(--accent); }
+    .theme-soft-pill {
+      background-color: var(--soft-tint);
+      color: var(--text-label);
+      border-color: var(--input-border);
+    }
+    .theme-action-btn:hover {
+      background-color: var(--accent);
+      color: #FFFFFF;
+    }
+    .theme-ring:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--input-ring);
+    }
+
+
+    .theme-table-header {
+      background-color: var(--table-head);
+      border-bottom: 2px solid var(--accent);
+      color: var(--text-primary);
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .theme-table-header th {
+      color: var(--text-label);
+      border-bottom: 2px solid var(--accent);
+    }
+    .theme-ver-ata-btn {
+      background-color: var(--soft-tint);
+      color: var(--text-label);
+      border: 1px solid var(--input-border);
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .theme-ver-ata-btn:hover {
+      background-color: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+      box-shadow: 0 3px 10px -2px var(--card-shadow);
+    }
+
   </style>
 </head>
-<body data-theme="azul" class="min-h-screen flex flex-col bg-white">
+<body data-theme="azul" class="min-h-screen flex flex-col">
 
-  <!-- Cabeçalho Executivo -->
+  <!-- Cabeçalho Executivo (Sem Logo Institucional) -->
   <header class="theme-header text-white shadow-lg">
     <div class="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
       <div>
@@ -301,7 +375,7 @@
             Governança & Pricing • 2026
           </span>
           <span class="text-xs text-white/85 font-medium" id="headerSubtitleBadge">
-            19 Reuniões Consolidadas
+            20 Reuniões Consolidadas
           </span>
           <span class="text-xs text-white/75 font-semibold" id="activeThemeLabel">
             • Paleta: Azul
@@ -311,7 +385,7 @@
           Comitê Atuarial e Comercial • Painel Executivo 2026
         </h1>
         <p class="text-xs sm:text-sm text-white/80">
-          Análise de Pleitos, Taxa de Aprovação, Elasticidade de Desconto e Volume de Vidas
+          Análise de Pleitos, Taxa de Aprovação, Sinistralidade, Descontos Ponderados e Volume de Vidas
         </p>
       </div>
 
@@ -350,131 +424,138 @@
     </div>
   </header>
 
-  <main class="w-full max-w-[1400px] mx-auto px-4 sm:px-6 py-5 space-y-4 flex-1 bg-white">
+  <main class="max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-6 space-y-6 flex-1">
 
     <!-- Barra de Filtros Dinâmicos -->
     <section class="theme-card rounded-2xl p-4 sm:p-5">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3.5">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full" style="background: var(--accent);"></span>
-          <h2 class="theme-text-primary text-xs font-bold uppercase tracking-wider">Filtros Executivos Dinâmicos</h2>
+          <span class="w-2 h-2 rounded-full theme-primary-bg"></span>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-600">Filtros de Análise</h2>
         </div>
-        <span id="filterCounter" class="theme-text-accent-dark theme-border-input text-xs font-semibold bg-white px-3 py-1 rounded-full border">
-          Exibindo 37 de 37 cotações
+        <span id="filterCounter" class="text-xs font-semibold px-3 py-1 rounded-full border theme-soft-pill">
+          Exibindo 38 de 38 cotações
         </span>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
         <div>
-          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Unidade de Negócio</label>
+          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Unidade</label>
           <select id="filterUnidade" class="theme-input w-full rounded-xl px-3 py-2 text-xs font-semibold">
             <option value="">Todas as Unidades</option>
           </select>
         </div>
         <div>
-          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Gerente de Vendas</label>
+          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Gerente</label>
           <select id="filterGerente" class="theme-input w-full rounded-xl px-3 py-2 text-xs font-semibold">
             <option value="">Todos os Gerentes</option>
           </select>
         </div>
         <div>
-          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Executivo de Vendas</label>
+          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Executivo</label>
           <select id="filterExecutivo" class="theme-input w-full rounded-xl px-3 py-2 text-xs font-semibold">
             <option value="">Todos os Executivos</option>
           </select>
         </div>
         <div>
-          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Status da Deliberação</label>
+          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Deliberação</label>
           <select id="filterStatus" class="theme-input w-full rounded-xl px-3 py-2 text-xs font-semibold">
             <option value="">Todos os Status</option>
-            <option value="Sim">Aprovado (Sim)</option>
-            <option value="Não">Negado (Não)</option>
-            <option value="Pendente">Pendente / Reanálise</option>
-            <option value="Não se aplica (Outro pleito)">Outro Pleito</option>
+            <option value="Sim">Aprovado</option>
+            <option value="Não">Negado</option>
+            <option value="Pendente">Pendente de Retorno</option>
+          </select>
+        </div>
+        <div>
+          <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Sinistralidade</label>
+          <select id="filterSinistralidade" class="theme-input w-full rounded-xl px-3 py-2 text-xs font-semibold">
+            <option value="">Todas (Com e Sem)</option>
+            <option value="Sim">Com Sinistralidade (Sim)</option>
+            <option value="Não">Sem Sinistralidade (Não)</option>
           </select>
         </div>
         <div>
           <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Mês da Reunião</label>
           <select id="filterMes" class="theme-input w-full rounded-xl px-3 py-2 text-xs font-semibold">
-            <option value="">Todos os Meses (Jul–Nov/26)</option>
+            <option value="">Todos os Meses</option>
           </select>
         </div>
         <div>
           <label class="theme-text-label block text-[11px] font-bold uppercase mb-1">Busca Rápida</label>
-          <input type="text" id="filterBusca" placeholder="Empresa, cotação ou corretora..." class="theme-input theme-placeholder w-full rounded-xl px-3 py-2 text-xs font-medium" />
+          <input type="text" id="filterBusca" placeholder="Empresa, cotação ou corretora..." class="theme-input w-full rounded-xl px-3 py-2 text-xs font-semibold" />
         </div>
       </div>
     </section>
 
     <!-- 6 KPIs Principais -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
       <div class="theme-card rounded-2xl p-4 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="theme-text-label text-xs font-bold">Cotações Analisadas</span>
-          <span class="theme-soft-icon w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">📋</span>
+          <span class="text-xs font-bold text-slate-500">Cotações Analisadas</span>
+          <span class="w-8 h-8 rounded-lg theme-soft-pill border flex items-center justify-center font-bold text-sm">📋</span>
         </div>
         <div class="mt-2">
-          <div id="kpiCotacoes" class="theme-text-primary text-2xl sm:text-3xl font-extrabold">37</div>
-          <p id="kpiReunioesSub" class="theme-text-muted text-[11px] mt-1">Distribuídas em 19 reuniões</p>
+          <div id="kpiCotacoes" class="text-2xl sm:text-3xl font-extrabold text-slate-900">38</div>
+          <p id="kpiReunioesSub" class="text-[11px] text-slate-500 mt-1">Em 20 reuniões do comitê</p>
         </div>
       </div>
 
       <div class="theme-card rounded-2xl p-4 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="theme-text-label text-xs font-bold">Volume de Vidas</span>
-          <span class="theme-soft-icon theme-text-accent-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">👥</span>
+          <span class="text-xs font-bold text-slate-500">Volume de Vidas</span>
+          <span class="w-8 h-8 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-sm">👥</span>
         </div>
         <div class="mt-2">
-          <div id="kpiVidasTotal" class="theme-text-primary text-2xl sm:text-3xl font-extrabold">58.837</div>
-          <p id="kpiVidasAprovSub" class="text-[11px] font-semibold text-emerald-700 mt-1">17.896 vidas aprovadas (30,4%)</p>
+          <div id="kpiVidasTotal" class="text-2xl sm:text-3xl font-extrabold text-slate-900">60.732</div>
+          <p id="kpiVidasAprovSub" class="text-[11px] font-semibold theme-primary-text mt-1">20.235 vidas aprovadas no comitê (33,3%)</p>
         </div>
       </div>
 
       <div class="theme-card rounded-2xl p-4 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="theme-text-label text-xs font-bold">Taxa de Aprovação</span>
-          <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">✓</span>
+          <span class="text-xs font-bold text-slate-500">Taxa de Aprovação</span>
+          <span class="w-8 h-8 rounded-lg bg-green-50 text-green-700 flex items-center justify-center font-bold text-sm">✓</span>
         </div>
         <div class="mt-2">
-          <div id="kpiTaxaAprov" class="text-2xl sm:text-3xl font-extrabold text-emerald-700">35,1%</div>
-          <p id="kpiTaxaDecididasSub" class="theme-text-muted text-[11px] mt-1">13 de 37 • 43,3% das decididas</p>
+          <div id="kpiTaxaAprov" class="text-2xl sm:text-3xl font-extrabold" style="color: #059669;">39,5%</div>
+          <p id="kpiTaxaDecididasSub" class="text-[11px] text-slate-500 mt-1">15 de 38 (14 desc. + 1 vigência) • 46,9% decididas</p>
         </div>
       </div>
 
       <div class="theme-card theme-accent-left rounded-2xl p-4 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="theme-text-label text-xs font-bold">Desconto Médio Concedido</span>
-          <span class="theme-soft-icon w-8 h-8 rounded-lg flex items-center justify-center font-extrabold text-xs">%</span>
+          <span class="text-xs font-bold text-slate-500">Desconto Concedido (Ponderado)</span>
+          <span class="w-8 h-8 rounded-lg theme-soft-pill border flex items-center justify-center font-extrabold text-xs">%</span>
         </div>
         <div class="mt-2">
-          <div id="kpiDescConcedido" class="theme-text-primary text-2xl sm:text-3xl font-extrabold">8,86%</div>
-          <p id="kpiDescRangeSub" class="theme-text-muted text-[11px] mt-1">Mín 5,00% • Máx 11,89%</p>
+          <div id="kpiDescConcedido" class="text-2xl sm:text-3xl font-extrabold text-slate-900">7,32%</div>
+          <p id="kpiDescRangeSub" class="text-[11px] text-slate-500 mt-1">Ponderado por vidas • Simples: 8,58%</p>
         </div>
       </div>
 
       <div class="theme-card rounded-2xl p-4 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="theme-text-label text-xs font-bold">Desconto Médio Pedido</span>
-          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-sm">⚖️</span>
+          <span class="text-xs font-bold text-slate-500">Desconto Pedido (Ponderado)</span>
+          <span class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-sm">⚖️</span>
         </div>
         <div class="mt-2">
-          <div id="kpiDescPedido" class="theme-text-primary text-2xl sm:text-3xl font-extrabold">15,22%</div>
-          <p id="kpiSpreadSub" class="theme-text-accent-dark text-[11px] font-semibold mt-1">Calibragem média: -5,42 p.p.</p>
+          <div id="kpiDescPedido" class="text-2xl sm:text-3xl font-extrabold text-slate-900">16,37%</div>
+          <p id="kpiSpreadSub" class="text-[11px] font-semibold text-sky-700 mt-1">Redução média aprovada: -7,55 p.p.</p>
         </div>
       </div>
 
-      <div class="theme-card rounded-2xl p-4 flex flex-col justify-between">
+      <div class="theme-card rounded-2xl p-4 flex flex-col justify-between border-l-4 border-l-sky-600">
         <div class="flex items-center justify-between">
-          <span class="theme-text-label text-xs font-bold">Pipeline Pendente</span>
-          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-sm">⏳</span>
+          <span class="text-xs font-bold text-slate-500">Aprovados c/ Sinistralidade</span>
+          <span class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-sm">📊</span>
         </div>
         <div class="mt-2">
-          <div id="kpiPendentes" class="text-2xl sm:text-3xl font-extrabold text-amber-700">6</div>
-          <p id="kpiVidasPendSub" class="theme-text-muted text-[11px] mt-1">7.100 vidas aguardando retorno</p>
+          <div id="kpiSinistralidadeAprov" class="text-2xl sm:text-3xl font-extrabold text-sky-800">33,3%</div>
+          <p id="kpiSinistralidadeSub" class="text-[11px] text-slate-500 mt-1">5 de 15 aprovadas (3.558 vidas)</p>
         </div>
       </div>
     </section>
 
-    <!-- 3 Cards de Insights Automáticos -->
+    <!-- 3 Cards de Resumo Executivo -->
     <section id="insightsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></section>
 
     <!-- Gráficos Principais -->
@@ -482,12 +563,12 @@
       <div class="theme-card rounded-2xl p-5 lg:col-span-5 flex flex-col">
         <div class="flex items-center justify-between mb-3">
           <div>
-            <h3 class="theme-text-primary text-sm font-extrabold">Funil de Deliberação do Comitê</h3>
-            <p class="theme-text-muted text-xs">Distribuição por status de decisão (Cotações vs. Volume de Vidas)</p>
+            <h3 class="text-sm font-extrabold text-slate-900">Resultado das Deliberações</h3>
+            <p class="text-xs text-slate-500">Clique em uma barra para filtrar o painel sem ocultar as demais</p>
           </div>
-          <div class="theme-border-input inline-flex rounded-lg bg-white border p-0.5 text-[11px] font-bold">
-            <button id="btnFunilCot" class="theme-btn-primary px-2.5 py-1 rounded-md shadow-xs cursor-pointer">Cotações</button>
-            <button id="btnFunilVidas" class="theme-text-label px-2.5 py-1 rounded-md cursor-pointer">Vidas</button>
+          <div class="inline-flex rounded-lg bg-slate-100 p-0.5 text-[11px] font-bold">
+            <button id="btnFunilCot" class="px-2.5 py-1 rounded-md bg-white theme-primary-text shadow-sm">Cotações</button>
+            <button id="btnFunilVidas" class="px-2.5 py-1 rounded-md text-slate-600">Vidas</button>
           </div>
         </div>
         <div class="relative w-full" style="height: 290px;">
@@ -498,11 +579,11 @@
       <div class="theme-card rounded-2xl p-5 lg:col-span-7 flex flex-col">
         <div class="flex items-center justify-between mb-3">
           <div>
-            <h3 class="theme-text-primary text-sm font-extrabold">Elasticidade: % Solicitado vs. % Concedido</h3>
-            <p class="theme-text-muted text-xs">Calibragem atuarial nas cotações aprovadas (com % pedido informado)</p>
+            <h3 class="text-sm font-extrabold text-slate-900">Comparativo de Desconto: % Solicitado vs. % Concedido</h3>
+            <p class="text-xs text-slate-500">Percentual pedido pela área comercial frente ao percentual aprovado pelo comitê</p>
           </div>
-          <span class="theme-text-accent-dark theme-border-input text-[11px] font-bold bg-white px-2.5 py-1 rounded-lg border">
-            Teto aprovado: 11,89%
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border theme-soft-pill">
+            Máximo aprovado: 11,89%
           </span>
         </div>
         <div class="relative w-full" style="height: 290px;">
@@ -514,8 +595,8 @@
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
       <div class="theme-card rounded-2xl p-5 lg:col-span-5 flex flex-col">
         <div class="mb-3">
-          <h3 class="theme-text-primary text-sm font-extrabold">Desempenho por Unidade de Negócio</h3>
-          <p class="theme-text-muted text-xs">Cotações enviadas, aprovadas e desconto médio concedido</p>
+          <h3 class="text-sm font-extrabold text-slate-900">Desempenho por Unidade de Negócio</h3>
+          <p class="text-xs text-slate-500">Volume de pleitos enviados e cotações aprovadas por regional</p>
         </div>
         <div class="relative w-full" style="height: 290px;">
           <canvas id="chartUnidades"></canvas>
@@ -524,8 +605,8 @@
 
       <div class="theme-card rounded-2xl p-5 lg:col-span-4 flex flex-col">
         <div class="mb-3">
-          <h3 class="theme-text-primary text-sm font-extrabold">Evolução Mensal (Jul–Nov/2026)</h3>
-          <p class="theme-text-muted text-xs">Volume de cotações analisadas e aprovações por mês</p>
+          <h3 class="text-sm font-extrabold text-slate-900">Evolução Mensal (2026)</h3>
+          <p class="text-xs text-slate-500">Cotações analisadas e aprovações mês a mês</p>
         </div>
         <div class="relative w-full" style="height: 290px;">
           <canvas id="chartMensal"></canvas>
@@ -534,8 +615,8 @@
 
       <div class="theme-card rounded-2xl p-5 lg:col-span-3 flex flex-col">
         <div class="mb-3">
-          <h3 class="theme-text-primary text-sm font-extrabold">Ranking de Executivos</h3>
-          <p class="theme-text-muted text-xs">Total de pleitos e aprovações por executivo</p>
+          <h3 class="text-sm font-extrabold text-slate-900">Desempenho por Executivo</h3>
+          <p class="text-xs text-slate-500">Pleitos enviados e aprovações por executivo</p>
         </div>
         <div id="rankingExecutivos" class="space-y-2.5 overflow-y-auto max-h-64 pr-1"></div>
       </div>
@@ -543,868 +624,82 @@
 
     <!-- Tabela Detalhada de Cotações -->
     <section class="theme-card rounded-2xl overflow-hidden">
-      <div class="theme-border-card p-5 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
-          <h3 class="theme-text-primary text-base font-extrabold">Detalhamento Completo das Deliberações</h3>
-          <p class="theme-text-muted text-xs">Clique em "Ver ata" para inspecionar o texto integral do pleito e do parecer técnico</p>
+          <h3 class="text-base font-extrabold text-slate-900">Detalhamento Completo das Deliberações</h3>
+          <p class="text-xs text-slate-500">Clique em "Ver ata" para consultar o texto completo do pleito e do parecer técnico</p>
         </div>
-        <span class="theme-text-muted text-xs font-medium" id="tableSummaryNote">Ordenado cronologicamente</span>
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="sortSelector" class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Ordenar por:</label>
+          <select id="sortSelector" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-800 theme-ring">
+            <option value="data_desc">Mais Recentes (Últimas Reuniões)</option>
+            <option value="data_asc">Ordem Cronológica (Mais Antigas)</option>
+            <option value="vidas_desc">Maior Volume de Vidas</option>
+            <option value="desc_conc_desc">Maior % Desconto Concedido</option>
+            <option value="desc_sol_desc">Maior % Desconto Pedido</option>
+            <option value="sinistralidade_desc">Maior % Sinistralidade</option>
+            <option value="status_aprov">Status: Aprovados Primeiro</option>
+            <option value="status_pend">Status: Pendentes Primeiro</option>
+            <option value="empresa_asc">Empresa / Cliente (A–Z)</option>
+            <option value="unidade_asc">Unidade de Negócio (A–Z)</option>
+          </select>
+        </div>
       </div>
-      <div class="overflow-x-auto bg-white">
+      <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="theme-table-head text-[11px] font-bold uppercase tracking-wider">
-              <th class="py-3 px-4">Reunião</th>
-              <th class="py-3 px-4">Cotação</th>
-              <th class="py-3 px-4">Empresa / Corretora</th>
-              <th class="py-3 px-4">Unidade / Equipe</th>
-              <th class="py-3 px-4 text-right">Vidas</th>
-              <th class="py-3 px-4">Produto</th>
-              <th class="py-3 px-4">Pleito Resumido</th>
-              <th class="py-3 px-4 text-center">Status</th>
-              <th class="py-3 px-4 text-center">% Concedido</th>
+            <tr class="theme-table-header text-[11px] font-extrabold uppercase tracking-wider select-none">
+              <th onclick="toggleColSort('data')" class="py-3 px-4 cursor-pointer hover:bg-slate-100 transition">Reunião <span id="sortIcon_data" class="text-[10px] theme-primary-text">↓</span></th>
+              <th onclick="toggleColSort('cotacao')" class="py-3 px-4 cursor-pointer hover:bg-slate-100 transition">Cotação <span id="sortIcon_cotacao" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('empresa')" class="py-3 px-4 cursor-pointer hover:bg-slate-100 transition">Empresa / Corretora <span id="sortIcon_empresa" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('unidade')" class="py-3 px-4 cursor-pointer hover:bg-slate-100 transition">Unidade / Equipe <span id="sortIcon_unidade" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('vidas')" class="py-3 px-4 text-right cursor-pointer hover:bg-slate-100 transition">Vidas <span id="sortIcon_vidas" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('produto')" class="py-3 px-4 cursor-pointer hover:bg-slate-100 transition">Produto <span id="sortIcon_produto" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('sinistralidade')" class="py-3 px-4 text-center cursor-pointer hover:bg-slate-100 transition">Sinistralidade <span id="sortIcon_sinistralidade" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('pleito')" class="py-3 px-4 cursor-pointer hover:bg-slate-100 transition">Pleito Resumido <span id="sortIcon_pleito" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('status')" class="py-3 px-4 text-center cursor-pointer hover:bg-slate-100 transition">Status <span id="sortIcon_status" class="text-[10px] opacity-40">↕</span></th>
+              <th onclick="toggleColSort('concedido')" class="py-3 px-4 text-center cursor-pointer hover:bg-slate-100 transition">% Concedido <span id="sortIcon_concedido" class="text-[10px] opacity-40">↕</span></th>
               <th class="py-3 px-4 text-center">Ata</th>
             </tr>
           </thead>
-          <tbody id="tabelaCorpo" class="theme-tbody divide-y text-xs"></tbody>
+          <tbody id="tabelaCorpo" class="divide-y divide-slate-100 text-xs"></tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <!-- Modal de Detalhe da Ata -->
-  <div id="modalAta" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden theme-border-card border">
+  <!-- Modal de Detalhe da Ata (Sem Logo Institucional) -->
+  <div id="modalAta" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden border border-slate-200">
       <div class="theme-header text-white px-6 py-4 flex items-center justify-between gap-3">
         <div>
-          <span id="modalMeta" class="theme-pill px-2 py-0.5 rounded-full text-[11px] uppercase tracking-wider font-bold"></span>
-          <h4 id="modalEmpresa" class="text-base sm:text-lg font-extrabold leading-tight text-white mt-1"></h4>
+          <span id="modalMeta" class="text-[11px] uppercase tracking-wider text-white/80 font-bold"></span>
+          <h4 id="modalEmpresa" class="text-base sm:text-lg font-extrabold leading-tight"></h4>
         </div>
-        <button id="btnFecharModal" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold cursor-pointer">✕</button>
+        <button id="btnFecharModal" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 flex items-center justify-center text-white font-bold">✕</button>
       </div>
-      <div class="p-6 space-y-4 text-xs text-slate-800">
-        <div class="theme-modal-box grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-xl">
-          <div><span class="theme-text-muted block text-[10px] font-bold uppercase">Cotação</span><strong id="mCotacao" class="theme-text-primary text-sm"></strong></div>
-          <div><span class="theme-text-muted block text-[10px] font-bold uppercase">Vidas</span><strong id="mVidas" class="theme-text-primary text-sm"></strong></div>
-          <div><span class="theme-text-muted block text-[10px] font-bold uppercase">Produto</span><strong id="mProduto" class="text-slate-800"></strong></div>
-          <div><span class="theme-text-muted block text-[10px] font-bold uppercase">Corretora</span><strong id="mCorretora" class="text-slate-800"></strong></div>
+      <div class="p-6 space-y-4 text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+          <div><span class="text-slate-400 block text-[10px] font-bold uppercase">Cotação</span><strong id="mCotacao" class="text-slate-800 text-sm"></strong></div>
+          <div><span class="text-slate-400 block text-[10px] font-bold uppercase">Vidas</span><strong id="mVidas" class="text-slate-800 text-sm"></strong></div>
+          <div><span class="text-slate-400 block text-[10px] font-bold uppercase">Produto</span><strong id="mProduto" class="text-slate-800"></strong></div>
+          <div><span class="text-slate-400 block text-[10px] font-bold uppercase">Sinistralidade</span><strong id="mSinistralidade" class="text-slate-800"></strong></div>
+          <div><span class="text-slate-400 block text-[10px] font-bold uppercase">Corretora</span><strong id="mCorretora" class="text-slate-800"></strong></div>
         </div>
         <div>
-          <span class="theme-text-muted text-[11px] font-bold uppercase tracking-wider block mb-1">Pleito Comercial (Texto Integral da Ata)</span>
-          <div id="mPleito" class="theme-modal-pleito p-3.5 rounded-xl text-slate-800 leading-relaxed"></div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Pleito Comercial (Texto Integral da Ata)</span>
+          <div id="mPleito" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 leading-relaxed"></div>
         </div>
         <div>
-          <span class="theme-text-accent-dark text-[11px] font-bold uppercase tracking-wider block mb-1">Parecer / Deliberação do Comitê</span>
-          <div id="mDeliberacao" class="theme-modal-delib p-3.5 rounded-xl font-medium leading-relaxed"></div>
+          <span class="text-[11px] font-bold uppercase tracking-wider theme-primary-text block mb-1">Parecer / Deliberação do Comitê Atuarial</span>
+          <div id="mDeliberacao" class="p-3.5 rounded-xl border text-slate-800 font-medium leading-relaxed theme-soft-pill"></div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const FALLBACK_DATA = [
-  {
-    "dataReuniao": "16/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 1",
-    "empresa": "EMPRESA 1",
-    "corretora": "CORRETORA 1",
-    "dataCriacao": "24/06/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo W",
-    "vidas": 293,
-    "vidasTexto": "293",
-    "produto": "Ideal Regional Enf.",
-    "pleito": "Apresentamos o custo do produto IDEAL REG. ENF. No valor de R$ 435,64, o pleito da consultoria é a redução de 9%, sendo que o valor de R$ 396,43, teremos grandes possibilidades de fechamento.",
-    "pleitoResumo": "9% (Alvo: R$ 396,43)",
-    "percSolicitado": 9.0,
-    "deliberacao": "Aprovado o Desconto de 9%",
-    "status": "Sim",
-    "detalheDelib": "9% de desconto",
-    "percConcedido": 9.0
-  },
-  {
-    "dataReuniao": "16/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 2",
-    "empresa": "EMPRESA 2",
-    "corretora": "CORRETORA 2",
-    "dataCriacao": "25/02/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 426,
-    "vidasTexto": "426",
-    "produto": "Ideal Nacional (c/ copart.)",
-    "pleito": "Solicitação de desconto no produto Ideal Nacional com coparticipação, custo para fechamento R$350,00",
-    "pleitoResumo": "Alvo: R$ 350,00",
-    "percSolicitado": null,
-    "deliberacao": "Não Aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "16/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 3",
-    "empresa": "EMPRESA 3",
-    "corretora": "CORRETORA 3",
-    "dataCriacao": "16/06/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva S",
-    "vidas": 101,
-    "vidasTexto": "101",
-    "produto": "Ideal Salvador",
-    "pleito": "Plano novo. Cliente é uma empresa siderúrgica do segmento de produção de aço, com predominância de colaboradores do chão de fábrica. O produto Ideal Salvador possui custo de R$ 669,37, com o Hospital Mater Dei como âncora. O custo médio do produto Direto Salvador da SulAmérica, é de R$ 493,23. Para viabilizar o fechamento da negociação, precisamos chegar ao custo de R$ 480,00. Vigência contratual de 24 meses.",
-    "pleitoResumo": "Alvo: R$ 480,00",
-    "percSolicitado": null,
-    "deliberacao": "Não Aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "20/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 4",
-    "empresa": "EMPRESA 4",
-    "corretora": "CORRETORA 4",
-    "dataCriacao": "08/06/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executiva R",
-    "vidas": 2363,
-    "vidasTexto": "2363",
-    "produto": "Não informado",
-    "pleito": "O cliente está priorizando a Unimed CNU e o contrato possui total aderência ao nosso perfil de atuação. Vale destacar que o mercado concorrente sequer foi cotado, o que demonstra o forte interesse e fidelidade do cliente pela nossa marca. Contudo, a aplicação do agravo de 33% tornou-se o único limitador para o avanço do processo. Como a implantação está dependendo exclusivamente desta adequação financeira, corretora mencionou se temos uma margem de 10% de desconto nos custos apresentados.",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Reanálise com base no relatório de sinistralidade",
-    "status": "Pendente",
-    "detalheDelib": "Reanálise com base no relatório de sinistralidade",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "20/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 5",
-    "empresa": "EMPRESA 5",
-    "corretora": "CORRETORA 5",
-    "dataCriacao": "01/06/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executiva R",
-    "vidas": 125,
-    "vidasTexto": "125",
-    "produto": "Ideal Nacional",
-    "pleito": "Precisamos de um desconto de 10% no Ideal Nacional, para implantarmos a conta. Amil apresentou um custo de R$ 422,24 ticket médio, enquanto CNU apresentou R$ 461,56",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Não Aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "20/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 6",
-    "empresa": "EMPRESA 6",
-    "corretora": "CORRETORA 6",
-    "dataCriacao": "15/06/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 638,
-    "vidasTexto": "638",
-    "produto": "Ideal Nacional Enf.",
-    "pleito": "Para implantarmos essa conta, precisamos de um desconto de 11,82% no plano Ideal Nacional Enf, a concorrência apresentou um ticket médio de R$300,00 reais, abaixo do preço atual da Hapvida que é de R$304,00. Sinistralidade atual é de 61%",
-    "pleitoResumo": "11,82%",
-    "percSolicitado": 11.82,
-    "deliberacao": "Concedido desconto de 10%",
-    "status": "Sim",
-    "detalheDelib": "10% de desconto",
-    "percConcedido": 10.0
-  },
-  {
-    "dataReuniao": "20/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 7",
-    "empresa": "EMPRESA 7",
-    "corretora": "CORRETORA 7",
-    "dataCriacao": "15/06/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executiva R",
-    "vidas": 2032,
-    "vidasTexto": "2032",
-    "produto": "Não informado",
-    "pleito": "O cliente mostrou interesse pela Unimed CNU, mas a Bradesco apresentou o maior saving de 3%. Diante desse cenário, precisamos apresentar um desconto de 5%",
-    "pleitoResumo": "5,0%",
-    "percSolicitado": 5.0,
-    "deliberacao": "Aguardando complemento de informações para reanálise",
-    "status": "Pendente",
-    "detalheDelib": "Aguardando complemento de informações para reanálise",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "23/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 8",
-    "empresa": "EMPRESA 8",
-    "corretora": "CORRETORA 8",
-    "dataCriacao": "01/07/2026",
-    "unidade": "Brasília",
-    "gerente": "GERENTE 3",
-    "executivo": "Executiva M",
-    "vidas": 167,
-    "vidasTexto": "167",
-    "produto": "Ideal Nacional (s/ copart.)",
-    "pleito": "Pleito de desconto para o Produto Ideal Nacional sem coparticipação. Objetivo do ticket: entre R$ 480,00 e R$ 510,00",
-    "pleitoResumo": "Alvo: R$ 480,00 a R$ 510,00",
-    "percSolicitado": null,
-    "deliberacao": "Não aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "30/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 9",
-    "empresa": "EMPRESA 9",
-    "corretora": "CORRETORA 9",
-    "dataCriacao": "06/07/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 133,
-    "vidasTexto": "133",
-    "produto": "Não informado",
-    "pleito": "Solicitamos desconto de 23,44% na proposta.",
-    "pleitoResumo": "23,44%",
-    "percSolicitado": 23.44,
-    "deliberacao": "Não aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "30/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 10",
-    "empresa": "EMPRESA 10",
-    "corretora": "CORRETORA 10",
-    "dataCriacao": "21/07/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 408,
-    "vidasTexto": "408",
-    "produto": "Ideal Nacional",
-    "pleito": "Solicitamos desconto de 10% no produto Ideal Nacional. Concorrente Saúde Brasil com R$ 300,00",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Aprovado 6% de desconto",
-    "status": "Sim",
-    "detalheDelib": "6% de desconto",
-    "percConcedido": 6.0
-  },
-  {
-    "dataReuniao": "30/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 11",
-    "empresa": "EMPRESA 11",
-    "corretora": "CORRETORA 11",
-    "dataCriacao": "14/07/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 1122,
-    "vidasTexto": "1122",
-    "produto": "Não informado",
-    "pleito": "Desconto de 20% na proposta. Vigência para 11/2026. Sulamerica apresentou custo inferiores de 15% e isenção da primeira fatura. Bradesco atual, interesse em renovar o contrato estendendo a fidelidade atual até 2028, como contrapartida para flexibilização do percentual de reajuste da renovação de 2026.",
-    "pleitoResumo": "20,0%",
-    "percSolicitado": 20.0,
-    "deliberacao": "Não aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "30/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 12",
-    "empresa": "EMPRESA 12",
-    "corretora": "CORRETORA 12",
-    "dataCriacao": "17/07/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva S",
-    "vidas": 261,
-    "vidasTexto": "261",
-    "produto": "Ideal Nacional",
-    "pleito": "Cliente com 261 vidas. Atualmente, 146 vidas estão na Promédica com mensalidade de R$ 448,44, e as demais distribuídas entre operadoras do segmento PME. Relatório de sinistralidade da Promédica recebido, com índice de 50,49%. Custo ideal nacional: R$ 582,22. Custo-alvo solicitado pela corretora para viabilizar o fechamento: R$ 498,00.",
-    "pleitoResumo": "Alvo: R$ 498,00",
-    "percSolicitado": null,
-    "deliberacao": "Concedido desconto de 7,72% considerando as novas informações disponibilizadas",
-    "status": "Sim",
-    "detalheDelib": "7,72% de desconto",
-    "percConcedido": 7.72
-  },
-  {
-    "dataReuniao": "30/07/2026",
-    "mes": "2026-07",
-    "cotacao": "EXEMPLO 13",
-    "empresa": "EMPRESA 13",
-    "corretora": "CORRETORA 13",
-    "dataCriacao": "23/07/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executiva R",
-    "vidas": 7149,
-    "vidasTexto": "7149",
-    "produto": "Ideal Nacional",
-    "pleito": "Precisamos de um desconto de 23% para o produto Ideal Nacional. O valor atual é de R$ 388,00 e precisamos atingir o valor-alvo de R$ 300,00. ( OPORTUNIDADE ALTA DE FECHAMENTO)",
-    "pleitoResumo": "23% (Alvo: R$ 300,00)",
-    "percSolicitado": 23.0,
-    "deliberacao": "Não há informações suficientes para que o atuarial consiga conceder desconto, portanto, não aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado (falta de informações)",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "03/08/2026",
-    "mes": "2026-08",
-    "cotacao": "EXEMPLO 14",
-    "empresa": "EMPRESA 14",
-    "corretora": "CORRETORA 14",
-    "dataCriacao": "30/07/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 690,
-    "vidasTexto": "690",
-    "produto": "Não informado",
-    "pleito": "Desconto de 25% para viabilização de migração para a CNU. 246 vidas na Amil e 444 sem plano.",
-    "pleitoResumo": "25,0%",
-    "percSolicitado": 25.0,
-    "deliberacao": "Aprovado 9% de desconto e deliberado negociação para redução do agenciamento em 50% (revertido em desconto, mediante compartilhamento de risco na renovção. Se abaixo de 70%, pagaremos os 50% de agenciamento)",
-    "status": "Sim",
-    "detalheDelib": "9% de desconto (+ negociação de 50% de agenciamento)",
-    "percConcedido": 9.0
-  },
-  {
-    "dataReuniao": "03/08/2026",
-    "mes": "2026-08",
-    "cotacao": "EXEMPLO 15",
-    "empresa": "EMPRESA 15",
-    "corretora": "CORRETORA 15",
-    "dataCriacao": "21/07/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 11387,
-    "vidasTexto": "2589 / 8798",
-    "produto": "Não informado",
-    "pleito": "Corretora solicita o maximo de desconto para migração a CNU.",
-    "pleitoResumo": "Desconto máximo",
-    "percSolicitado": null,
-    "deliberacao": "Aprovado desconto de 6,52%",
-    "status": "Sim",
-    "detalheDelib": "6,52% de desconto",
-    "percConcedido": 6.52
-  },
-  {
-    "dataReuniao": "10/08/2026",
-    "mes": "2026-08",
-    "cotacao": "EXEMPLO 16",
-    "empresa": "EMPRESA 16",
-    "corretora": "CORRETORA 16",
-    "dataCriacao": "04/08/2026",
-    "unidade": "Brasília",
-    "gerente": "GERENTE 3",
-    "executivo": "Executiva E",
-    "vidas": 19419,
-    "vidasTexto": "19419",
-    "produto": "Linha Estilo (Grade antiga)",
-    "pleito": "Emissão de proposta considerando a grade antiga, linha Estilo, para apresentação a Caixa.",
-    "pleitoResumo": "Manter grade antiga",
-    "percSolicitado": null,
-    "deliberacao": "A diretriz atuarial e de produtos é seguir com o novo portifolio. Comercial pleitear exceção em função do tempo de negociação",
-    "status": "Não",
-    "detalheDelib": "Seguir com novo portfólio (pleitear exceção)",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "13/08/2026",
-    "mes": "2026-08",
-    "cotacao": "EXEMPLO 17",
-    "empresa": "EMPRESA 17",
-    "corretora": "CORRETORA 17",
-    "dataCriacao": "24/07/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 140,
-    "vidasTexto": "140",
-    "produto": "Não informado",
-    "pleito": "PRECISAMOS DE 20% DE DESCONTO NA PROPOSTA APRESENTADA",
-    "pleitoResumo": "20,0%",
-    "percSolicitado": 20.0,
-    "deliberacao": "Concedido desconto 11,89%",
-    "status": "Sim",
-    "detalheDelib": "11,89% de desconto",
-    "percConcedido": 11.89
-  },
-  {
-    "dataReuniao": "20/08/2026",
-    "mes": "2026-08",
-    "cotacao": "EXEMPLO 18",
-    "empresa": "EMPRESA 18",
-    "corretora": "CORRETORA 18",
-    "dataCriacao": "13/07/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo W",
-    "vidas": 688,
-    "vidasTexto": "688",
-    "produto": "Completo Apto.",
-    "pleito": "A consultora solicita um desconto de 19% sobre o custo do produto completo apto.",
-    "pleitoResumo": "19,0%",
-    "percSolicitado": 19.0,
-    "deliberacao": "Pendente relatório do maior utilizador para prosseguir com a análise",
-    "status": "Pendente",
-    "detalheDelib": "Pendente relatório do maior utilizador para prosseguir com a análise",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "27/08/2026",
-    "mes": "2026-08",
-    "cotacao": "EXEMPLO 19",
-    "empresa": "EMPRESA 19",
-    "corretora": "CORRETORA 19",
-    "dataCriacao": "17/08/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 124,
-    "vidasTexto": "124",
-    "produto": "Ideal Regional",
-    "pleito": "Objetivo chegar no custo do Ideal Regional R$466,00 custo apresentado pela Sulamerica no Direto.",
-    "pleitoResumo": "Alvo: R$ 466,00",
-    "percSolicitado": null,
-    "deliberacao": "Não Concedido",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "03/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 20",
-    "empresa": "EMPRESA 20",
-    "corretora": "CORRETORA 20",
-    "dataCriacao": "10/08/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 702,
-    "vidasTexto": "702",
-    "produto": "Único (múltiplo 7x)",
-    "pleito": "Desconto de 15%. Multiplo de reembolo do plano Unico para 7x a tabela. Conforme comparativo, proposta da Sulamérica está bem competitiva, precisamos chegar em um custo melhor para avançarmos. Corretora tem interesse me direcionar para a CNU.",
-    "pleitoResumo": "15% + Reembolso 7x",
-    "percSolicitado": 15.0,
-    "deliberacao": "Comercial vai solicitar a abertura dos 3 maiores utilizadores",
-    "status": "Pendente",
-    "detalheDelib": "Comercial vai solicitar a abertura dos 3 maiores utilizadores",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "03/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 21",
-    "empresa": "EMPRESA 21",
-    "corretora": "CORRETORA 21",
-    "dataCriacao": "26/08/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executiva R",
-    "vidas": 2589,
-    "vidasTexto": "2589",
-    "produto": "Não informado",
-    "pleito": "Desconto necessário de 19,7%.",
-    "pleitoResumo": "19,7%",
-    "percSolicitado": 19.7,
-    "deliberacao": "Concedido Desconto de 10%",
-    "status": "Sim",
-    "detalheDelib": "10% de desconto",
-    "percConcedido": 10.0
-  },
-  {
-    "dataReuniao": "10/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 22",
-    "empresa": "EMPRESA 22",
-    "corretora": "CORRETORA 22",
-    "dataCriacao": "30/07/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executiva R",
-    "vidas": 1150,
-    "vidasTexto": "1150",
-    "produto": "Não informado",
-    "pleito": "Solicito um percentual de desconto de 20% para viabilizar o fechamento da proposta. O cliente também possui vidas na Unimed Curitiba e projeta unificar toda a operação em um futuro próximo, porém, neste momento, a substituição contempla apenas a apólice da Amil. Cenário da Concorrência: A Amil zerou o reajuste da conta por estar com sinistralidade abaixo do Break-Even (BE). Cronograma de Implantação: Previsão 01/11. A carta de cancelamento foi protocolada junto à Amil.",
-    "pleitoResumo": "20,0%",
-    "percSolicitado": 20.0,
-    "deliberacao": "Esclarecimento de informações adicionais",
-    "status": "Pendente",
-    "detalheDelib": "Esclarecimento de informações adicionais",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "14/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 23",
-    "empresa": "EMPRESA 23",
-    "corretora": "CORRETORA 23",
-    "dataCriacao": "04/08/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 122,
-    "vidasTexto": "122",
-    "produto": "Ideal Nacional",
-    "pleito": "Desconto de 30% no produto Ideal Nacional",
-    "pleitoResumo": "30,0%",
-    "percSolicitado": 30.0,
-    "deliberacao": "Concedido desconto de 10%",
-    "status": "Sim",
-    "detalheDelib": "10% de desconto",
-    "percConcedido": 10.0
-  },
-  {
-    "dataReuniao": "14/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 24",
-    "empresa": "EMPRESA 24",
-    "corretora": "CORRETORA 24",
-    "dataCriacao": "20/08/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 157,
-    "vidasTexto": "157",
-    "produto": "Efetivo Regional / Completo",
-    "pleito": "custos atuais na Hapvida é de R$130,00 e na Sulamerica Especial 100 R$ 587,73. Os custos: Amil Prata R$ 493,66 - Bradesco Efetivo R$ 532,09 - Efetivo Regional R$ 561,41 / Amil S750 770,18 - Bradesco TN3P R$ 827,04 - Completo R$ 1.000,98. Precisamos de equiparar os custos da Sulamerica",
-    "pleitoResumo": "Equiparar SulAmérica (R$ 587,73)",
-    "percSolicitado": null,
-    "deliberacao": "Não concedido",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "14/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 25",
-    "empresa": "EMPRESA 25",
-    "corretora": "CORRETORA 25",
-    "dataCriacao": "10/08/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 387,
-    "vidasTexto": "387",
-    "produto": "Não informado",
-    "pleito": "Desconto de 10%",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Concedido desconto de 10%",
-    "status": "Sim",
-    "detalheDelib": "10% de desconto",
-    "percConcedido": 10.0
-  },
-  {
-    "dataReuniao": "24/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 26",
-    "empresa": "EMPRESA 26",
-    "corretora": "CORRETORA 26",
-    "dataCriacao": "09/09/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 386,
-    "vidasTexto": "386",
-    "produto": "Não informado",
-    "pleito": "Desconto para ficar com o valor abaixo do que a concorrência apresentou (Sulamerica e Seguros Unimed). Rede credenciada da CNU na região, Ilha de Itaparica, melhor que a da Sulemarica",
-    "pleitoResumo": "Cobrir concorrência",
-    "percSolicitado": null,
-    "deliberacao": "Não Concedido",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "24/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 27",
-    "empresa": "EMPRESA 27",
-    "corretora": "CORRETORA 27",
-    "dataCriacao": "09/09/2026",
-    "unidade": "Bahia",
-    "gerente": "GERENTE 2",
-    "executivo": "Executiva M",
-    "vidas": 165,
-    "vidasTexto": "165",
-    "produto": "Não informado",
-    "pleito": "Chegar no custo apresentado da Sulamerica, 30% de desconto",
-    "pleitoResumo": "30,0%",
-    "percSolicitado": 30.0,
-    "deliberacao": "Comercial vai solicitar relatório de utilização detalhado",
-    "status": "Pendente",
-    "detalheDelib": "Comercial vai solicitar relatório de utilização detalhado",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "24/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 28",
-    "empresa": "EMPRESA 28",
-    "corretora": "CORRETORA 28",
-    "dataCriacao": "10/09/2026",
-    "unidade": "Nacional",
-    "gerente": "GERENTE 1",
-    "executivo": "Executiva R",
-    "vidas": 444,
-    "vidasTexto": "444",
-    "produto": "Não informado",
-    "pleito": "Manter os valores com vigência de 12 meses para fechamento",
-    "pleitoResumo": "Vigência de 12 meses",
-    "percSolicitado": null,
-    "deliberacao": "Concedido",
-    "status": "Não se aplica (Outro pleito)",
-    "detalheDelib": "Manter vigência de 12 meses aprovada",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "28/09/2026",
-    "mes": "2026-09",
-    "cotacao": "EXEMPLO 29",
-    "empresa": "EMPRESA 29",
-    "corretora": "CORRETORA 29",
-    "dataCriacao": "03/09/2026",
-    "unidade": "Manaus",
-    "gerente": "GERENTE 3",
-    "executivo": "Executiva E",
-    "vidas": 336,
-    "vidasTexto": "336",
-    "produto": "Não informado",
-    "pleito": "Desconto de 10% para competirmos com o produto Prata da Amil.",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Não concedido desconto. Sugerido ao comercial pedir a Corretora abrir mão do AG",
-    "status": "Não",
-    "detalheDelib": "Não concedido (sugerido pedir para corretora abrir mão do AG)",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "05/10/2026",
-    "mes": "2026-10",
-    "cotacao": "EXEMPLO 30",
-    "empresa": "EMPRESA 30",
-    "corretora": "CORRETORA 30",
-    "dataCriacao": "14/09/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 217,
-    "vidasTexto": "217",
-    "produto": "Ideal Regional SP",
-    "pleito": "Desconto de 5%. Plano atual Amil, ficamos com o faturamento igual ao da Amil. Se possivel desconto somente no plano Ideal Regional SP, corretora entende que se conseguirmos o desconto temos chances de fechamento.",
-    "pleitoResumo": "5,0%",
-    "percSolicitado": 5.0,
-    "deliberacao": "Concedido desconto de 5%",
-    "status": "Sim",
-    "detalheDelib": "5% de desconto",
-    "percConcedido": 5.0
-  },
-  {
-    "dataReuniao": "15/10/2026",
-    "mes": "2026-10",
-    "cotacao": "EXEMPLO 31",
-    "empresa": "EMPRESA 31",
-    "corretora": "CORRETORA 31",
-    "dataCriacao": "08/09/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo W",
-    "vidas": 1297,
-    "vidasTexto": "1297",
-    "produto": "Não informado",
-    "pleito": "Solicitamos 5% de desconto em relação ao custo já apresentado, tendo em vista evolução para fechamento com fins compensatórios da multa contratual. Atualmente as vidas estão na AMIL.",
-    "pleitoResumo": "5,0%",
-    "percSolicitado": 5.0,
-    "deliberacao": "Desconto negado tendo em vista o custo médio ajustado na Amil de 443,31. Com a receita média já liberada isso projeta uma sinistralidade de 86%",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "15/10/2026",
-    "mes": "2026-10",
-    "cotacao": "EXEMPLO 32",
-    "empresa": "EMPRESA 32",
-    "corretora": "CORRETORA 32",
-    "dataCriacao": "07/08/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo W",
-    "vidas": 547,
-    "vidasTexto": "547",
-    "produto": "Não informado",
-    "pleito": "Solicitamos 10% de desconto em relação ao custo apresentado, tendo em vista que estamos financeiramente empatados com a Seguradora atual (SAS), o calculo já inclui a multa rescisória do contrato.",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Desconto aprovado de 10% após análise do gerencial enviado",
-    "status": "Sim",
-    "detalheDelib": "10% de desconto",
-    "percConcedido": 10.0
-  },
-  {
-    "dataReuniao": "19/10/2026",
-    "mes": "2026-10",
-    "cotacao": "EXEMPLO 33",
-    "empresa": "EMPRESA 33",
-    "corretora": "CORRETORA 33",
-    "dataCriacao": "14/10/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 217,
-    "vidasTexto": "217",
-    "produto": "Não informado",
-    "pleito": "Desconto de mais 10%, empresa solicitou coparticipação somente para consultas. Sinistralidade em 27,35%",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Concedido 10% na cotação 15529",
-    "status": "Sim",
-    "detalheDelib": "10% de desconto",
-    "percConcedido": 10.0
-  },
-  {
-    "dataReuniao": "19/10/2026",
-    "mes": "2026-10",
-    "cotacao": "EXEMPLO 34",
-    "empresa": "EMPRESA 34",
-    "corretora": "CORRETORA 34",
-    "dataCriacao": "28/09/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 842,
-    "vidasTexto": "842",
-    "produto": "Ideal Nacional",
-    "pleito": "Desconto de 23% no Ideal Nac. Empresa sem plano. Precisamos chegar no valor abaixo dos R$ 300,00. Hoje ideal esta com R$ 389,09",
-    "pleitoResumo": "23% (Alvo: < R$ 300,00)",
-    "percSolicitado": 23.0,
-    "deliberacao": "Não aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "09/11/2026",
-    "mes": "2026-11",
-    "cotacao": "EXEMPLO 35",
-    "empresa": "EMPRESA 35",
-    "corretora": "CORRETORA 35",
-    "dataCriacao": "28/10/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 1086,
-    "vidasTexto": "1086",
-    "produto": "Ideal Nacional",
-    "pleito": "Desconto de 12%. Sem plano atualmente. Nosso ideal nacional está em 339,77 e precisamos chegar no valor de R$ 300,00 onde a empresa já possui liberação para este valor. Hapvida apresentou valor de R$ 199,00.",
-    "pleitoResumo": "12% (Alvo: R$ 300,00)",
-    "percSolicitado": 12.0,
-    "deliberacao": "Desconto Não Aprovado - Alternativa de retirar 50% do Ag",
-    "status": "Não",
-    "detalheDelib": "Não aprovado (alternativa: retirar 50% do Ag)",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "09/11/2026",
-    "mes": "2026-11",
-    "cotacao": "EXEMPLO 36",
-    "empresa": "EMPRESA 36",
-    "corretora": "CORRETORA 36",
-    "dataCriacao": "26/10/2026",
-    "unidade": "Brasília",
-    "gerente": "GERENTE 3",
-    "executivo": "Executiva M",
-    "vidas": 393,
-    "vidasTexto": "393",
-    "produto": "Ideal Regional (E)",
-    "pleito": "Desconto de 15%. Sem plano atualmente. Nosso ideal Regional (E) está em R$ 546,45 / Porto apresentou R$ 401,00 no produto Bronze Regional",
-    "pleitoResumo": "15,0%",
-    "percSolicitado": 15.0,
-    "deliberacao": "Não Aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  },
-  {
-    "dataReuniao": "12/11/2026",
-    "mes": "2026-11",
-    "cotacao": "EXEMPLO 37",
-    "empresa": "EMPRESA 37",
-    "corretora": "CORRETORA 37",
-    "dataCriacao": "21/10/2026",
-    "unidade": "São Paulo",
-    "gerente": "GERENTE 1",
-    "executivo": "Executivo M",
-    "vidas": 134,
-    "vidasTexto": "134",
-    "produto": "Não informado",
-    "pleito": "Desconto de 10%, para ficarmos abaixo do faturamento atual da empresa e trazer a conta.",
-    "pleitoResumo": "10,0%",
-    "percSolicitado": 10.0,
-    "deliberacao": "Não aprovado",
-    "status": "Não",
-    "detalheDelib": "Não aprovado / Não concedido",
-    "percConcedido": null
-  }
-];
-    let rawData = [...FALLBACK_DATA];
-
-    rawData = rawData.map(d => {
-      let pr = d.pleitoResumo;
-      let pSol = d.percSolicitado;
-      if (typeof pr === 'number' && !isNaN(pr)) {
-        const pct = pr <= 1 ? Math.round(pr * 10000) / 100 : Math.round(pr * 100) / 100;
-        pr = pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%';
-        if (pSol === null || pSol === undefined) pSol = pct;
-      } else if (typeof pr === 'string' && /^0[.,]\d+$/.test(pr.trim())) {
-        const num = parseFloat(pr.trim().replace(',', '.'));
-        const pct = Math.round(num * 10000) / 100;
-        pr = pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%';
-        if (pSol === null || pSol === undefined) pSol = pct;
-      }
-      let pConc = d.percConcedido;
-      if ((pConc === null || pConc === undefined || isNaN(pConc)) && d.status === 'Sim') {
-        const m = String(d.detalheDelib || d.deliberacao || '').match(/(\d+(?:[.,]\d+)?)\s*%/);
-        if (m) pConc = parseFloat(m[1].replace(',', '.'));
-      }
-      return { ...d, pleitoResumo: pr, percSolicitado: pSol, percConcedido: pConc };
-    });
-
-    const THEMES = {
+        const THEMES = {
       "azul": {
         label: "Azul",
         accent: "#1D4ED8",
@@ -1448,7 +743,210 @@
     };
 
     let currentTheme = "azul";
+
+    function getPalette() {
+      const t = THEMES[currentTheme] || THEMES.azul;
+      return {
+        primary: t.accent,
+        primarySoft: t.lineBg,
+        secondary: t.secondary,
+        secondarySoft: t.lineBg,
+        darkLine: t.tickPrimary,
+        darkFill: t.lineBg,
+        grid: t.grid,
+        tick: t.tick,
+        tickPrimary: t.tickPrimary
+      };
+    }
+
+    function applyTheme(themeKey) {
+      if (!THEMES[themeKey]) return;
+      currentTheme = themeKey;
+      document.body.setAttribute('data-theme', themeKey);
+      const lbl = document.getElementById('activeThemeLabel');
+      if (lbl) lbl.textContent = `• Paleta: ${THEMES[themeKey].label}`;
+      document.querySelectorAll('[data-theme-select]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-theme-select') === themeKey);
+      });
+      if (typeof updateDashboard === 'function') {
+        updateDashboard();
+      }
+    }
+
+    document.querySelectorAll('[data-theme-select]').forEach(btn => {
+      btn.addEventListener('click', () => applyTheme(btn.getAttribute('data-theme-select')));
+    });
+
+    const FALLBACK_DATA = [{"dataReuniao": "16/07/2026", "mes": "2026-07", "cotacao": "13387", "empresa": "EMPRESA 1", "corretora": "Corretora M", "dataCriacao": "24/06/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo W", "vidas": 293, "vidasTexto": "293", "produto": "Ideal Regional Enf.", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Apresentamos o custo do produto IDEAL REG. ENF. No valor de R$ 435,64, o pleito da consultoria é a redução de 9%, sendo que o valor de R$ 396,43, teremos grandes possibilidades de fechamento.", "pleitoResumo": "9% (Alvo: R$ 396,43)", "percSolicitado": 9.0, "deliberacao": "Aprovado o Desconto de 9%", "status": "Sim", "detalheDelib": "9% de desconto", "percConcedido": 9.0}, {"dataReuniao": "16/07/2026", "mes": "2026-07", "cotacao": "13496", "empresa": "EMPRESA 2", "corretora": "Corretora F", "dataCriacao": "25/02/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 426, "vidasTexto": "426", "produto": "Ideal Nacional (c/ copart.)", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Solicitação de desconto no produto Ideal Nacional com coparticipação, custo para fechamento R$350,00", "pleitoResumo": "Alvo: R$ 350,00", "percSolicitado": null, "deliberacao": "Não Aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "16/07/2026", "mes": "2026-07", "cotacao": "13618", "empresa": "EMPRESA 3", "corretora": "Corretora T", "dataCriacao": "16/06/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva S", "vidas": 101, "vidasTexto": "101", "produto": "Ideal Salvador", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Plano novo. Cliente é uma empresa siderúrgica do segmento de produção de aço, com predominância de colaboradores do chão de fábrica. O produto Ideal Salvador possui custo de R$ 669,37, com o Hospital Mater Dei como âncora. O custo médio do produto Direto Salvador da SulAmérica, é de R$ 493,23. Para viabilizar o fechamento da negociação, precisamos chegar ao custo de R$ 480,00. Vigência contratual de 24 meses.", "pleitoResumo": "Alvo: R$ 480,00", "percSolicitado": null, "deliberacao": "Não Aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "20/07/2026", "mes": "2026-07", "cotacao": "13619", "empresa": "EMPRESA 4", "corretora": "Corretora A", "dataCriacao": "08/06/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 2363, "vidasTexto": "2.363", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "O cliente está priorizando o plano em questão e o contrato possui total aderência ao nosso perfil de atuação. Vale destacar que o mercado concorrente sequer foi cotado, o que demonstra o forte interesse e fidelidade do cliente pela nossa marca. Contudo, a aplicação do agravo de 33% tornou-se o único limitador para o avanço do processo. Como a implantação está dependendo exclusivamente desta adequação financeira, corretora mencionou se temos uma margem de 10% de desconto nos custos apresentados.", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Reanálise com base no relatório de sinistralidade", "status": "Pendente", "detalheDelib": "Reanálise com base no relatório de sinistralidade", "percConcedido": null}, {"dataReuniao": "20/07/2026", "mes": "2026-07", "cotacao": "13181", "empresa": "EMPRESA 5", "corretora": "Corretora D", "dataCriacao": "01/06/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 125, "vidasTexto": "125", "produto": "Ideal Nacional", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Precisamos de um desconto de 10% no Ideal Nacional, para implantarmos a conta. Amil apresentou um custo de R$ 422,24 ticket médio, enquanto a proposta atual apresentou R$ 461,56", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Não Aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "20/07/2026", "mes": "2026-07", "cotacao": "13421", "empresa": "EMPRESA 6", "corretora": "Corretora A", "dataCriacao": "15/06/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 638, "vidasTexto": "638", "produto": "Ideal Nacional Enf.", "sinistralidadeInfo": "Sim", "percSinistralidade": 61.0, "pleito": "Para implantarmos essa conta, precisamos de um desconto de 11,82% no plano Ideal Nacional Enf, a concorrência apresentou um ticket médio de R$300,00 reais, abaixo do preço atual da Hapvida que é de R$304,00. Sinistralidade atual é de 61%", "pleitoResumo": "11,82%", "percSolicitado": 11.82, "deliberacao": "Concedido desconto de 10%", "status": "Sim", "detalheDelib": "10% de desconto", "percConcedido": 10.0}, {"dataReuniao": "20/07/2026", "mes": "2026-07", "cotacao": "13438", "empresa": "EMPRESA 7", "corretora": "Corretora G", "dataCriacao": "15/06/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 2032, "vidasTexto": "2.032", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "O cliente mostrou interesse pela nossa proposta, mas a Bradesco apresentou o maior saving de 3%. Diante desse cenário, precisamos apresentar um desconto de 5%", "pleitoResumo": "5%", "percSolicitado": 5.0, "deliberacao": "Aguardando complemento de informações para reanálise", "status": "Pendente", "detalheDelib": "Aguardando complemento de informações para reanálise", "percConcedido": null}, {"dataReuniao": "23/07/2026", "mes": "2026-07", "cotacao": "13645", "empresa": "EMPRESA 8", "corretora": "Corretora T", "dataCriacao": "01/07/2026", "unidade": "Brasília", "gerente": "Gerente C", "executivo": "Executiva MR", "vidas": 167, "vidasTexto": "167", "produto": "Ideal Nacional (s/ copart.)", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Pleito de desconto para o Produto Ideal Nacional sem coparticipação. Objetivo do ticket: entre R$ 480,00 e R$ 510,00", "pleitoResumo": "Alvo: R$ 480,00 a R$ 510,00", "percSolicitado": null, "deliberacao": "Não aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "30/07/2026", "mes": "2026-07", "cotacao": "13727", "empresa": "EMPRESA 9", "corretora": "Corretora A", "dataCriacao": "06/07/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 133, "vidasTexto": "133", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Solicitamos desconto de 23,44% na proposta.", "pleitoResumo": "23,44%", "percSolicitado": 23.44, "deliberacao": "Não aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "30/07/2026", "mes": "2026-07", "cotacao": "13940", "empresa": "EMPRESA 10", "corretora": "Corretora A", "dataCriacao": "21/07/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 408, "vidasTexto": "408", "produto": "Ideal Nacional", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Solicitamos desconto de 10% no produto Ideal Nacional. Concorrente Saúde Brasil com R$ 300,00", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Aprovado 6% de desconto", "status": "Sim", "detalheDelib": "6% de desconto", "percConcedido": 6.0}, {"dataReuniao": "30/07/2026", "mes": "2026-07", "cotacao": "13737", "empresa": "EMPRESA 11", "corretora": "Corretora U", "dataCriacao": "14/07/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 1122, "vidasTexto": "1.122", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 20% na proposta. Vigência para 11/2026. Sulamerica apresentou custo inferiores de 15% e isenção da primeira fatura. Bradesco atual, interesse em renovar o contrato estendendo a fidelidade atual até 2028, como contrapartida para flexibilização do percentual de reajuste da renovação de 2026.", "pleitoResumo": "20%", "percSolicitado": 20.0, "deliberacao": "Não aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "30/07/2026", "mes": "2026-07", "cotacao": "13788", "empresa": "EMPRESA 12", "corretora": "Corretora C", "dataCriacao": "17/07/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva S", "vidas": 261, "vidasTexto": "261", "produto": "Ideal Nacional", "sinistralidadeInfo": "Sim", "percSinistralidade": 50.49, "pleito": "Cliente com 261 vidas. Atualmente, 146 vidas estão na Promédica com mensalidade de R$ 448,44, e as demais distribuídas entre operadoras do segmento PME. Relatório de sinistralidade da Promédica recebido, com índice de 50,49%. Custo ideal nacional: R$ 582,22. Custo-alvo solicitado pela corretora para viabilizar o fechamento: R$ 498,00.", "pleitoResumo": "Alvo: R$ 498,00", "percSolicitado": null, "deliberacao": "Concedido desconto de 7,72% considerando as novas informações disponibilizadas", "status": "Sim", "detalheDelib": "7,72% de desconto", "percConcedido": 7.72}, {"dataReuniao": "30/07/2026", "mes": "2026-07", "cotacao": "13973", "empresa": "EMPRESA 13", "corretora": "Corretora A", "dataCriacao": "23/07/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 7149, "vidasTexto": "7.149", "produto": "Ideal Nacional", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Precisamos de um desconto de 23% para o produto Ideal Nacional. O valor atual é de R$ 388,00 e precisamos atingir o valor-alvo de R$ 300,00. ( OPORTUNIDADE ALTA DE FECHAMENTO)", "pleitoResumo": "23% (Alvo: R$ 300,00)", "percSolicitado": 23.0, "deliberacao": "Não há informações suficientes para que o atuarial consiga conceder desconto, portanto, não aprovado", "status": "Não", "detalheDelib": "Não aprovado (falta de informações)", "percConcedido": null}, {"dataReuniao": "03/08/2026", "mes": "2026-08", "cotacao": "14050", "empresa": "EMPRESA 14", "corretora": "Corretora G", "dataCriacao": "30/07/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 690, "vidasTexto": "690", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 25% para viabilização de migração para a base. 246 vidas na Amil e 444 sem plano.", "pleitoResumo": "25%", "percSolicitado": 25.0, "deliberacao": "Aprovado 9% de desconto e deliberado negociação para redução do agenciamento em 50% (revertido em desconto, mediante compartilhamento de risco na renovção. Se abaixo de 70%, pagaremos os 50% de agenciamento)", "status": "Sim", "detalheDelib": "9% de desconto (+ negociação de 50% de agenciamento)", "percConcedido": 9.0}, {"dataReuniao": "03/08/2026", "mes": "2026-08", "cotacao": "13902 / 13905", "empresa": "EMPRESA 15", "corretora": "Corretora M", "dataCriacao": "21/07/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 11387, "vidasTexto": "2589 / 8798", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Corretora solicita o maximo de desconto para migração da conta.", "pleitoResumo": "Desconto máximo", "percSolicitado": null, "deliberacao": "Aprovado desconto de 6,52%", "status": "Sim", "detalheDelib": "6,52% de desconto", "percConcedido": 6.52}, {"dataReuniao": "10/08/2026", "mes": "2026-08", "cotacao": "SOL0393137", "empresa": "EMPRESA 16", "corretora": "Direto", "dataCriacao": "04/08/2026", "unidade": "Brasília", "gerente": "Gerente C", "executivo": "Executiva E", "vidas": 19419, "vidasTexto": "19.419", "produto": "Linha Estilo (Grade antiga)", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Emissão de proposta considerando a grade antiga, linha Estilo, para apresentação a EMPRESA 16.", "pleitoResumo": "Manter grade antiga", "percSolicitado": null, "deliberacao": "A diretriz atuarial e de produtos é seguir com o novo portifolio. Comercial pleitear exceção em função do tempo de negociação", "status": "Não", "detalheDelib": "Seguir com novo portfólio (pleitear exceção)", "percConcedido": null}, {"dataReuniao": "13/08/2026", "mes": "2026-08", "cotacao": "14025", "empresa": "EMPRESA 17", "corretora": "Corretora G", "dataCriacao": "24/07/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 140, "vidasTexto": "140", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "PRECISAMOS DE 20% DE DESCONTO NA PROPOSTA APRESENTADA", "pleitoResumo": "20%", "percSolicitado": 20.0, "deliberacao": "Concedido desconto 11,89%", "status": "Sim", "detalheDelib": "11,89% de desconto", "percConcedido": 11.89}, {"dataReuniao": "20/08/2026", "mes": "2026-08", "cotacao": "13702", "empresa": "EMPRESA 18", "corretora": "Corretora M", "dataCriacao": "13/07/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo W", "vidas": 688, "vidasTexto": "688", "produto": "Completo Apto.", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "A consultora solicita um desconto de 19% sobre o custo do produto completo apto.", "pleitoResumo": "19%", "percSolicitado": 19.0, "deliberacao": "Pendente relatório do maior utilizador para prosseguir com a análise", "status": "Pendente", "detalheDelib": "Pendente relatório do maior utilizador para prosseguir com a análise", "percConcedido": null}, {"dataReuniao": "27/08/2026", "mes": "2026-08", "cotacao": "14431", "empresa": "EMPRESA 19", "corretora": "Corretora S", "dataCriacao": "17/08/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 124, "vidasTexto": "124", "produto": "Ideal Regional", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Objetivo chegar no custo do Ideal Regional R$466,00 custo apresentado pela Sulamerica no Direto.", "pleitoResumo": "Alvo: R$ 466,00", "percSolicitado": null, "deliberacao": "Não Concedido", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "03/09/2026", "mes": "2026-09", "cotacao": "14205", "empresa": "EMPRESA 20", "corretora": "Corretora O", "dataCriacao": "10/08/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 702, "vidasTexto": "702", "produto": "Único (múltiplo 7x)", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 15%. Multiplo de reembolo do plano Unico para 7x a tabela. Conforme comparativo, proposta da Sulamérica está bem competitiva, precisamos chegar em um custo melhor para avançarmos. Corretora tem interesse em direcionar a conta.", "pleitoResumo": "15% + Reembolso 7x", "percSolicitado": 15.0, "deliberacao": "Comercial vai solicitar a abertura dos 3 maiores utilizadores", "status": "Pendente", "detalheDelib": "Comercial vai solicitar a abertura dos 3 maiores utilizadores", "percConcedido": null}, {"dataReuniao": "03/09/2026", "mes": "2026-09", "cotacao": "14610", "empresa": "EMPRESA 21", "corretora": "Corretora W", "dataCriacao": "26/08/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 2589, "vidasTexto": "2.589", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto necessário de 19,7%.", "pleitoResumo": "19,7%", "percSolicitado": 19.7, "deliberacao": "Concedido Desconto de 10%", "status": "Sim", "detalheDelib": "10% de desconto", "percConcedido": 10.0}, {"dataReuniao": "10/09/2026", "mes": "2026-09", "cotacao": "14066", "empresa": "EMPRESA 22", "corretora": "Corretora I", "dataCriacao": "30/07/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 1150, "vidasTexto": "1.150", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Solicito um percentual de desconto de 20% para viabilizar o fechamento da proposta. O cliente também possui vidas em outra regional e projeta unificar toda a operação em um futuro próximo, porém, neste momento, a substituição contempla apenas a apólice da Amil. Cenário da Concorrência: A Amil zerou o reajuste da conta por estar com sinistralidade abaixo do Break-Even (BE). Cronograma de Implantação: Previsão 01/11. A carta de cancelamento foi protocolada junto à Amil.", "pleitoResumo": "20%", "percSolicitado": 20.0, "deliberacao": "Esclarecimento de informações adicionais", "status": "Pendente", "detalheDelib": "Esclarecimento de informações adicionais", "percConcedido": null}, {"dataReuniao": "14/09/2026", "mes": "2026-09", "cotacao": "14624", "empresa": "EMPRESA 23", "corretora": "Corretora A", "dataCriacao": "04/08/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 122, "vidasTexto": "122", "produto": "Ideal Nacional", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 30% no produto Ideal Nacional", "pleitoResumo": "30%", "percSolicitado": 30.0, "deliberacao": "Concedido desconto de 10%", "status": "Sim", "detalheDelib": "10% de desconto", "percConcedido": 10.0}, {"dataReuniao": "14/09/2026", "mes": "2026-09", "cotacao": "14594", "empresa": "EMPRESA 24", "corretora": "Corretora A", "dataCriacao": "20/08/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 157, "vidasTexto": "157", "produto": "Efetivo Regional / Completo", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "custos atuais na Hapvida é de R$130,00 e na Sulamerica Especial 100 R$ 587,73. Os custos: Amil Prata R$ 493,66 - Bradesco Efetivo R$ 532,09 - Efetivo Regional R$ 561,41 / Amil S750 770,18 - Bradesco TN3P R$ 827,04 - Completo R$ 1.000,98. Precisamos de equiparar os custos da Sulamerica", "pleitoResumo": "Equiparar SulAmérica (R$ 587,73)", "percSolicitado": null, "deliberacao": "Não concedido", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "14/09/2026", "mes": "2026-09", "cotacao": "14301", "empresa": "EMPRESA 25", "corretora": "Corretora M", "dataCriacao": "10/08/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 387, "vidasTexto": "387", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 10%", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Concedido desconto de 10%", "status": "Sim", "detalheDelib": "10% de desconto", "percConcedido": 10.0}, {"dataReuniao": "24/09/2026", "mes": "2026-09", "cotacao": "14948", "empresa": "EMPRESA 26", "corretora": "Corretora M", "dataCriacao": "09/09/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 386, "vidasTexto": "386", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto para ficar com o valor abaixo do que a concorrência apresentou (Sulamerica e Seguros Concorrente). Rede credenciada na região, Ilha de Itaparica, melhor que a da Sulamerica", "pleitoResumo": "Cobrir concorrência", "percSolicitado": null, "deliberacao": "Não Concedido", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "24/09/2026", "mes": "2026-09", "cotacao": "14867", "empresa": "EMPRESA 27", "corretora": "Corretora A", "dataCriacao": "09/09/2026", "unidade": "Bahia", "gerente": "Gerente C", "executivo": "Executiva Ma", "vidas": 165, "vidasTexto": "165", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Chegar no custo apresentado da Sulamerica, 30% de desconto", "pleitoResumo": "30%", "percSolicitado": 30.0, "deliberacao": "Comercial vai solicitar relatório de utilização detalhado", "status": "Pendente", "detalheDelib": "Comercial vai solicitar relatório de utilização detalhado", "percConcedido": null}, {"dataReuniao": "24/09/2026", "mes": "2026-09", "cotacao": "14874", "empresa": "EMPRESA 28", "corretora": "Corretora L", "dataCriacao": "10/09/2026", "unidade": "Nacional", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 444, "vidasTexto": "444", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Manter os valores com vigência de 12 meses para fechamento", "pleitoResumo": "Vigência de 12 meses", "percSolicitado": null, "deliberacao": "Concedido", "status": "Não se aplica (Outro pleito)", "detalheDelib": "Manter vigência de 12 meses aprovada", "percConcedido": null}, {"dataReuniao": "28/09/2026", "mes": "2026-09", "cotacao": "14786", "empresa": "EMPRESA 29", "corretora": "Corretora S", "dataCriacao": "03/09/2026", "unidade": "Manaus", "gerente": "Gerente C", "executivo": "Executiva E", "vidas": 336, "vidasTexto": "336", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 10% para competirmos com o produto Prata da Amil.", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Não concedido desconto. Sugerido ao comercial pedir a Corretora abrir mão do AG", "status": "Não", "detalheDelib": "Não concedido (sugerido pedir para corretora abrir mão do AG)", "percConcedido": null}, {"dataReuniao": "05/10/2026", "mes": "2026-10", "cotacao": "14910", "empresa": "EMPRESA 30", "corretora": "Corretora O", "dataCriacao": "14/09/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 217, "vidasTexto": "217", "produto": "Ideal Regional SP", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 5%. Plano atual Amil, ficamos com o faturamento igual ao da Amil. Se possivel desconto somente no plano Ideal Regional SP, corretora entende que se conseguirmos o desconto temos chances de fechamento.", "pleitoResumo": "5%", "percSolicitado": 5.0, "deliberacao": "Concedido desconto de 5%", "status": "Sim", "detalheDelib": "5% de desconto", "percConcedido": 5.0}, {"dataReuniao": "15/10/2026", "mes": "2026-10", "cotacao": "14816", "empresa": "EMPRESA 31", "corretora": "Corretora M", "dataCriacao": "08/09/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo W", "vidas": 1297, "vidasTexto": "1.297", "produto": "Não informado", "sinistralidadeInfo": "Sim", "percSinistralidade": 86.0, "pleito": "Solicitamos 5% de desconto em relação ao custo já apresentado, tendo em vista evolução para fechamento com fins compensatórios da multa contratual. Atualmente as vidas estão na AMIL.", "pleitoResumo": "5%", "percSolicitado": 5.0, "deliberacao": "Desconto negado tendo em vista o custo médio ajustado na Amil de 443,31. Com a receita média já liberada isso projeta uma sinistralidade de 86%", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "15/10/2026", "mes": "2026-10", "cotacao": "14199", "empresa": "EMPRESA 32", "corretora": "Corretora P", "dataCriacao": "07/08/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo W", "vidas": 547, "vidasTexto": "547", "produto": "Não informado", "sinistralidadeInfo": "Sim", "percSinistralidade": null, "pleito": "Solicitamos 10% de desconto em relação ao custo apresentado, tendo em vista que estamos financeiramente empatados com a operadora atual, o calculo já inclui a multa rescisória do contrato.", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Desconto aprovado de 10% após análise do gerencial enviado", "status": "Sim", "detalheDelib": "10% de desconto", "percConcedido": 10.0}, {"dataReuniao": "19/10/2026", "mes": "2026-10", "cotacao": "15529", "empresa": "EMPRESA 33", "corretora": "Corretora O", "dataCriacao": "14/10/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 217, "vidasTexto": "217", "produto": "Não informado", "sinistralidadeInfo": "Sim", "percSinistralidade": 27.35, "pleito": "Desconto de mais 10%, empresa solicitou coparticipação somente para consultas. Sinistralidade em 27,35%", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Concedido 10% na cotação 15529", "status": "Sim", "detalheDelib": "10% de desconto", "percConcedido": 10.0}, {"dataReuniao": "19/10/2026", "mes": "2026-10", "cotacao": "15247", "empresa": "EMPRESA 34", "corretora": "Corretora H", "dataCriacao": "28/09/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 842, "vidasTexto": "842", "produto": "Ideal Nacional", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 23% no Ideal Nac. Empresa sem plano. Precisamos chegar no valor abaixo dos R$ 300,00. Hoje ideal esta com R$ 389,09", "pleitoResumo": "23% (Alvo: < R$ 300,00)", "percSolicitado": 23.0, "deliberacao": "Não aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "09/11/2026", "mes": "2026-11", "cotacao": "15757", "empresa": "EMPRESA 35", "corretora": "Corretora A", "dataCriacao": "28/10/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 1086, "vidasTexto": "1.086", "produto": "Ideal Nacional", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 12%. Sem plano atualmente. Nosso ideal nacional está em 339,77 e precisamos chegar no valor de R$ 300,00 onde a empresa já possui liberação para este valor. Hapvida apresentou valor de R$ 199,00.", "pleitoResumo": "12% (Alvo: R$ 300,00)", "percSolicitado": 12.0, "deliberacao": "Desconto Não Aprovado - Alternativa de retirar 50% do Ag", "status": "Não", "detalheDelib": "Não aprovado (alternativa: retirar 50% do Ag)", "percConcedido": null}, {"dataReuniao": "09/11/2026", "mes": "2026-11", "cotacao": "15735", "empresa": "EMPRESA 36", "corretora": "Corretora F", "dataCriacao": "26/10/2026", "unidade": "Brasília", "gerente": "Gerente C", "executivo": "Executiva MR", "vidas": 393, "vidasTexto": "393", "produto": "Ideal Regional (E)", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 15%. Sem plano atualmente. Nosso ideal Regional (E) está em R$ 546,45 / Porto apresentou R$ 401,00 no produto Bronze Regional", "pleitoResumo": "15%", "percSolicitado": 15.0, "deliberacao": "Não Aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "12/11/2026", "mes": "2026-11", "cotacao": "15604", "empresa": "EMPRESA 37", "corretora": "Corretora H", "dataCriacao": "21/10/2026", "unidade": "São Paulo", "gerente": "Gerente J", "executivo": "Executivo Mc", "vidas": 134, "vidasTexto": "134", "produto": "Não informado", "sinistralidadeInfo": "Não", "percSinistralidade": null, "pleito": "Desconto de 10%, para ficarmos abaixo do faturamento atual da empresa e trazer a conta.", "pleitoResumo": "10%", "percSolicitado": 10.0, "deliberacao": "Não aprovado", "status": "Não", "detalheDelib": "Não aprovado / Não concedido", "percConcedido": null}, {"dataReuniao": "19/11/2026", "mes": "2026-11", "cotacao": "16107", "empresa": "EMPRESA 38", "corretora": "Corretora B", "dataCriacao": "12/11/2026", "unidade": "Nacional", "gerente": "Gerente J", "executivo": "Executiva R", "vidas": 1895, "vidasTexto": "1.895", "produto": "Não informado", "sinistralidadeInfo": "Sim", "percSinistralidade": 67.0, "pleito": "Precisamos de um desconto de 15% para ficarmos competitivos e seguirmos com a negociação e implantação. Sinistralidade está em 67%, população média de 32 anos, e hoje estão na operadora atual.", "pleitoResumo": "15%", "percSolicitado": 15.0, "deliberacao": "Concedido desconto de 5%", "status": "Sim", "detalheDelib": "5% de desconto", "percConcedido": 5.0}];
+    let rawData = FALLBACK_DATA;
+
+    rawData = rawData.map(d => {
+      let pr = d.pleitoResumo;
+      let pSol = d.percSolicitado;
+      if (typeof pr === 'number' && !isNaN(pr)) {
+        const pct = pr <= 1 ? Math.round(pr * 10000) / 100 : Math.round(pr * 100) / 100;
+        pr = pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%';
+        if (pSol === null || pSol === undefined) pSol = pct;
+      } else if (typeof pr === 'string' && /^0[.,]\d+$/.test(pr.trim())) {
+        const num = parseFloat(pr.trim().replace(',', '.'));
+        const pct = Math.round(num * 10000) / 100;
+        pr = pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%';
+        if (pSol === null || pSol === undefined) pSol = pct;
+      }
+      let pConc = d.percConcedido;
+      if ((pConc === null || pConc === undefined || isNaN(pConc)) && d.status === 'Sim') {
+        const m = String(d.detalheDelib || d.deliberacao || '').match(/(\d+(?:[.,]\d+)?)\s*%/);
+        if (m) pConc = parseFloat(m[1].replace(',', '.'));
+      }
+      let sinInfo = d.sinistralidadeInfo || 'Não';
+      let percSin = d.percSinistralidade !== undefined ? d.percSinistralidade : null;
+      const isCondComercial = String(d.status || '').indexOf('Outro') !== -1 || (d.status === 'Sim' && (pConc === null || pConc === undefined || isNaN(pConc)));
+      const statusNorm = isCondComercial ? 'Sim' : d.status;
+      return { ...d, status: statusNorm, isCondicaoComercial: isCondComercial, pleitoResumo: pr, percSolicitado: pSol, percConcedido: pConc, sinistralidadeInfo: sinInfo, percSinistralidade: percSin };
+    });
+
     let funilMode = 'cotacoes';
+    let selectedChartStatus = '';
+    let currentSortKey = 'data_desc';
+    let currentTableData = [];
+
+    function parseDateBR(dtStr) {
+      const p = String(dtStr || '').trim().split('/');
+      if (p.length !== 3) return 0;
+      return new Date(Number(p[2]), Number(p[1]) - 1, Number(p[0])).getTime();
+    }
+
+    function getSortedData(items) {
+      const arr = [...items];
+      const statusWeightAprov = { 'Sim': 1, 'Pendente': 2, 'Não': 3 };
+      const statusWeightPend = { 'Pendente': 1, 'Sim': 2, 'Não': 3 };
+      const statusWeightNeg = { 'Não': 1, 'Pendente': 2, 'Sim': 3 };
+
+      arr.sort((a, b) => {
+        switch (currentSortKey) {
+          case 'data_asc':
+            return parseDateBR(a.dataReuniao) - parseDateBR(b.dataReuniao);
+          case 'data_desc':
+            return parseDateBR(b.dataReuniao) - parseDateBR(a.dataReuniao);
+          case 'cotacao_asc':
+            return String(a.cotacao).localeCompare(String(b.cotacao), 'pt-BR', { numeric: true });
+          case 'cotacao_desc':
+            return String(b.cotacao).localeCompare(String(a.cotacao), 'pt-BR', { numeric: true });
+          case 'empresa_asc':
+            return String(a.empresa).localeCompare(String(b.empresa), 'pt-BR');
+          case 'empresa_desc':
+            return String(b.empresa).localeCompare(String(a.empresa), 'pt-BR');
+          case 'unidade_asc':
+            return String(a.unidade).localeCompare(String(b.unidade), 'pt-BR') || (b.vidas - a.vidas);
+          case 'unidade_desc':
+            return String(b.unidade).localeCompare(String(a.unidade), 'pt-BR') || (b.vidas - a.vidas);
+          case 'vidas_desc':
+            return (b.vidas || 0) - (a.vidas || 0);
+          case 'vidas_asc':
+            return (a.vidas || 0) - (b.vidas || 0);
+          case 'produto_asc':
+            return String(a.produto).localeCompare(String(b.produto), 'pt-BR');
+          case 'produto_desc':
+            return String(b.produto).localeCompare(String(a.produto), 'pt-BR');
+          case 'sinistralidade_desc': {
+            const sa = a.sinistralidadeInfo === 'Sim' ? (a.percSinistralidade !== null ? a.percSinistralidade : 0.01) : -1;
+            const sb = b.sinistralidadeInfo === 'Sim' ? (b.percSinistralidade !== null ? b.percSinistralidade : 0.01) : -1;
+            return sb - sa;
+          }
+          case 'sinistralidade_asc': {
+            const sa = a.sinistralidadeInfo === 'Sim' ? (a.percSinistralidade !== null ? a.percSinistralidade : 0.01) : 9999;
+            const sb = b.sinistralidadeInfo === 'Sim' ? (b.percSinistralidade !== null ? b.percSinistralidade : 0.01) : 9999;
+            return sa - sb;
+          }
+          case 'desc_sol_desc': {
+            const pa = (a.percSolicitado !== null && !isNaN(a.percSolicitado)) ? a.percSolicitado : -1;
+            const pb = (b.percSolicitado !== null && !isNaN(b.percSolicitado)) ? b.percSolicitado : -1;
+            return pb - pa || (b.vidas - a.vidas);
+          }
+          case 'desc_sol_asc': {
+            const pa = (a.percSolicitado !== null && !isNaN(a.percSolicitado)) ? a.percSolicitado : 9999;
+            const pb = (b.percSolicitado !== null && !isNaN(b.percSolicitado)) ? b.percSolicitado : 9999;
+            return pa - pb;
+          }
+          case 'status_aprov':
+            return (statusWeightAprov[a.status] || 9) - (statusWeightAprov[b.status] || 9) || (b.vidas - a.vidas);
+          case 'status_pend':
+            return (statusWeightPend[a.status] || 9) - (statusWeightPend[b.status] || 9) || (b.vidas - a.vidas);
+          case 'status_neg':
+            return (statusWeightNeg[a.status] || 9) - (statusWeightNeg[b.status] || 9) || (b.vidas - a.vidas);
+          case 'desc_conc_desc': {
+            const ca = (a.percConcedido !== null && !isNaN(a.percConcedido)) ? a.percConcedido : -1;
+            const cb = (b.percConcedido !== null && !isNaN(b.percConcedido)) ? b.percConcedido : -1;
+            return cb - ca || (b.vidas - a.vidas);
+          }
+          case 'desc_conc_asc': {
+            const ca = (a.percConcedido !== null && !isNaN(a.percConcedido)) ? a.percConcedido : 9999;
+            const cb = (b.percConcedido !== null && !isNaN(b.percConcedido)) ? b.percConcedido : 9999;
+            return ca - cb;
+          }
+          default:
+            return 0;
+        }
+      });
+      return arr;
+    }
+
+    function updateSortIcons() {
+      const cols = ['data', 'cotacao', 'empresa', 'unidade', 'vidas', 'produto', 'sinistralidade', 'pleito', 'status', 'concedido'];
+      cols.forEach(c => {
+        const el = document.getElementById('sortIcon_' + c);
+        if (el) {
+          el.textContent = '↕';
+          el.className = 'text-[10px] opacity-40';
+        }
+      });
+      const mapCol = {
+        data_desc: ['data', '↓'], data_asc: ['data', '↑'],
+        cotacao_desc: ['cotacao', '↓'], cotacao_asc: ['cotacao', '↑'],
+        empresa_asc: ['empresa', '↑'], empresa_desc: ['empresa', '↓'],
+        unidade_asc: ['unidade', '↑'], unidade_desc: ['unidade', '↓'],
+        vidas_desc: ['vidas', '↓'], vidas_asc: ['vidas', '↑'],
+        produto_asc: ['produto', '↑'], produto_desc: ['produto', '↓'],
+        sinistralidade_desc: ['sinistralidade', '↓'], sinistralidade_asc: ['sinistralidade', '↑'],
+        desc_sol_desc: ['pleito', '↓'], desc_sol_asc: ['pleito', '↑'],
+        status_aprov: ['status', '↓'], status_pend: ['status', '↑'], status_neg: ['status', '↓'],
+        desc_conc_desc: ['concedido', '↓'], desc_conc_asc: ['concedido', '↑']
+      };
+      const active = mapCol[currentSortKey];
+      if (active) {
+        const el = document.getElementById('sortIcon_' + active[0]);
+        if (el) {
+          el.textContent = active[1];
+          el.className = 'text-[10px] theme-primary-text font-extrabold opacity-100';
+        }
+      }
+      const sel = document.getElementById('sortSelector');
+      if (sel) {
+        const exists = [...sel.options].some(o => o.value === currentSortKey);
+        if (exists) sel.value = currentSortKey;
+      }
+    }
+
+    window.toggleColSort = function(col) {
+      const toggleMap = {
+        data: ['data_desc', 'data_asc'],
+        cotacao: ['cotacao_desc', 'cotacao_asc'],
+        empresa: ['empresa_asc', 'empresa_desc'],
+        unidade: ['unidade_asc', 'unidade_desc'],
+        vidas: ['vidas_desc', 'vidas_asc'],
+        produto: ['produto_asc', 'produto_desc'],
+        sinistralidade: ['sinistralidade_desc', 'sinistralidade_asc'],
+        pleito: ['desc_sol_desc', 'desc_sol_asc'],
+        status: ['status_aprov', 'status_pend'],
+        concedido: ['desc_conc_desc', 'desc_conc_asc']
+      };
+      const pair = toggleMap[col];
+      if (!pair) return;
+      currentSortKey = (currentSortKey === pair[0]) ? pair[1] : pair[0];
+      updateSortIcons();
+      renderTable(getFilteredData());
+    };
+
     let charts = {};
 
     function formatInt(n) {
@@ -1460,21 +958,18 @@
       return Number(n).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
     }
 
-    function applyTheme(themeKey) {
-      if (!THEMES[themeKey]) return;
-      currentTheme = themeKey;
-      document.body.setAttribute('data-theme', themeKey);
-      document.getElementById('activeThemeLabel').textContent = `• Paleta: ${THEMES[themeKey].label}`;
-
-      document.querySelectorAll('[data-theme-select]').forEach(btn => {
-        if (btn.getAttribute('data-theme-select') === themeKey) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
+    function calcMediaPonderada(items, field) {
+      let somaPeso = 0;
+      let somaVidas = 0;
+      items.forEach(d => {
+        const val = d[field];
+        const vidas = Number(d.vidas || 0);
+        if (val !== null && val !== undefined && !isNaN(val) && vidas > 0) {
+          somaPeso += val * vidas;
+          somaVidas += vidas;
         }
       });
-
-      updateDashboard();
+      return somaVidas > 0 ? (somaPeso / somaVidas) : null;
     }
 
     function populateFilters() {
@@ -1482,7 +977,7 @@
       const gerentes = [...new Set(rawData.map(d => d.gerente).filter(Boolean))].sort();
       const executivos = [...new Set(rawData.map(d => d.executivo).filter(Boolean))].sort();
       const meses = [...new Set(rawData.map(d => d.mes).filter(Boolean))].sort();
-      const nomesMes = { '07': 'Julho/2026', '08': 'Agosto/2026', '09': 'Setembro/2026', '10': 'Outubro/2026', '11': 'Novembro/2026', '12': 'Dezembro/2026' };
+      const nomesMes = { '01': 'Janeiro/2026', '02': 'Fevereiro/2026', '03': 'Março/2026', '04': 'Abril/2026', '05': 'Maio/2026', '06': 'Junho/2026', '07': 'Julho/2026', '08': 'Agosto/2026', '09': 'Setembro/2026', '10': 'Outubro/2026', '11': 'Novembro/2026', '12': 'Dezembro/2026' };
 
       const selU = document.getElementById('filterUnidade');
       selU.innerHTML = '<option value="">Todas as Unidades</option>';
@@ -1508,7 +1003,9 @@
       const u = document.getElementById('filterUnidade').value;
       const g = document.getElementById('filterGerente').value;
       const ex = document.getElementById('filterExecutivo').value;
-      const s = document.getElementById('filterStatus').value;
+      const sSelect = document.getElementById('filterStatus').value;
+      const s = selectedChartStatus || sSelect;
+      const sin = document.getElementById('filterSinistralidade').value;
       const m = document.getElementById('filterMes').value;
       const q = document.getElementById('filterBusca').value.trim().toLowerCase();
 
@@ -1517,6 +1014,29 @@
         if (g && d.gerente !== g) return false;
         if (ex && d.executivo !== ex) return false;
         if (s && d.status !== s) return false;
+        if (sin && d.sinistralidadeInfo !== sin) return false;
+        if (m && d.mes !== m) return false;
+        if (q) {
+          const hay = `${d.empresa} ${d.cotacao} ${d.corretora} ${d.produto} ${d.executivo}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function getFilteredDataIgnoringStatus() {
+      const u = document.getElementById('filterUnidade').value;
+      const g = document.getElementById('filterGerente').value;
+      const ex = document.getElementById('filterExecutivo').value;
+      const sin = document.getElementById('filterSinistralidade').value;
+      const m = document.getElementById('filterMes').value;
+      const q = document.getElementById('filterBusca').value.trim().toLowerCase();
+
+      return rawData.filter(d => {
+        if (u && d.unidade !== u) return false;
+        if (g && d.gerente !== g) return false;
+        if (ex && d.executivo !== ex) return false;
+        if (sin && d.sinistralidadeInfo !== sin) return false;
         if (m && d.mes !== m) return false;
         if (q) {
           const hay = `${d.empresa} ${d.cotacao} ${d.corretora} ${d.produto} ${d.executivo}`.toLowerCase();
@@ -1531,8 +1051,6 @@
       document.getElementById('filterCounter').textContent = `Exibindo ${data.length} de ${rawData.length} cotações`;
 
       const reunioesUnicas = new Set(data.map(d => d.dataReuniao)).size;
-      document.getElementById('headerSubtitleBadge').textContent = `${reunioesUnicas} Reuniões Consolidadas`;
-
       const totalVidas = data.reduce((acc, d) => acc + (d.vidas || 0), 0);
       const aprovados = data.filter(d => d.status === 'Sim');
       const negados = data.filter(d => d.status === 'Não');
@@ -1544,99 +1062,122 @@
       const taxaAprovTotal = data.length ? (aprovados.length / data.length) * 100 : 0;
       const taxaAprovDecididas = decididas ? (aprovados.length / decididas) * 100 : 0;
 
-      data.forEach(d => {
-        if ((d.percConcedido === null || d.percConcedido === undefined || isNaN(d.percConcedido)) && d.status === 'Sim') {
-          const m = String(d.detalheDelib || d.deliberacao || '').match(/(\d+(?:[.,]\d+)?)\s*%/);
-          if (m) d.percConcedido = parseFloat(m[1].replace(',', '.'));
-        }
-      });
       const concVals = aprovados.map(d => d.percConcedido).filter(v => v !== null && !isNaN(v));
-      const mediaConc = concVals.length ? concVals.reduce((a, b) => a + b, 0) / concVals.length : null;
-      const minConc = concVals.length ? Math.min(...concVals) : null;
-      const maxConc = concVals.length ? Math.max(...concVals) : null;
+      const mediaSimplesConc = concVals.length ? concVals.reduce((a, b) => a + b, 0) / concVals.length : null;
+      const mediaPondConc = calcMediaPonderada(aprovados, 'percConcedido');
+      const mediaPondSol = calcMediaPonderada(data, 'percSolicitado');
 
-      const solVals = data.map(d => d.percSolicitado).filter(v => v !== null && !isNaN(v));
-      const mediaSol = solVals.length ? solVals.reduce((a, b) => a + b, 0) / solVals.length : null;
+      const ambosAprov = aprovados.filter(d => d.percSolicitado !== null && d.percConcedido !== null && d.vidas > 0);
+      let diffPond = null;
+      if (ambosAprov.length > 0) {
+        const num = ambosAprov.reduce((acc, d) => acc + ((d.percConcedido - d.percSolicitado) * d.vidas), 0);
+        const den = ambosAprov.reduce((acc, d) => acc + d.vidas, 0);
+        diffPond = den > 0 ? (num / den) : null;
+      }
 
-      const ambosAprov = aprovados.filter(d => d.percSolicitado !== null && d.percConcedido !== null);
-      const spreadMedio = ambosAprov.length
-        ? ambosAprov.reduce((acc, d) => acc + (d.percConcedido - d.percSolicitado), 0) / ambosAprov.length
-        : null;
+      const aprovComSin = aprovados.filter(d => d.sinistralidadeInfo === 'Sim');
+      const vidasAprovComSin = aprovComSin.reduce((acc, d) => acc + (d.vidas || 0), 0);
+      const pctAprovComSin = aprovados.length ? (aprovComSin.length / aprovados.length) * 100 : 0;
 
       document.getElementById('kpiCotacoes').textContent = formatInt(data.length);
-      document.getElementById('kpiReunioesSub').textContent = `Distribuídas em ${reunioesUnicas} reuniões`;
+      document.getElementById('kpiReunioesSub').textContent = `Em ${reunioesUnicas} reuniões do comitê`;
+      document.getElementById('headerSubtitleBadge').textContent = `${reunioesUnicas} Reuniões Consolidadas`;
       document.getElementById('kpiVidasTotal').textContent = formatInt(totalVidas);
+      const aprovCondCom = aprovados.filter(d => d.isCondicaoComercial);
+      const aprovDescFin = aprovados.filter(d => !d.isCondicaoComercial);
       const pctVidasAprov = totalVidas ? ((vidasAprovadas / totalVidas) * 100).toFixed(1).replace('.', ',') : '0,0';
-      document.getElementById('kpiVidasAprovSub').textContent = `${formatInt(vidasAprovadas)} vidas aprovadas (${pctVidasAprov}%)`;
+      document.getElementById('kpiVidasAprovSub').textContent = `${formatInt(vidasAprovadas)} vidas aprovadas no comitê (${pctVidasAprov}%)`;
 
       document.getElementById('kpiTaxaAprov').textContent = taxaAprovTotal.toFixed(1).replace('.', ',') + '%';
-      document.getElementById('kpiTaxaDecididasSub').textContent = `${aprovados.length} de ${data.length} • ${taxaAprovDecididas.toFixed(1).replace('.', ',')}% das decididas`;
+      const detalheAprov = aprovCondCom.length > 0
+        ? `${aprovados.length} de ${data.length} (${aprovDescFin.length} desc. + ${aprovCondCom.length} vigência) • ${taxaAprovDecididas.toFixed(1).replace('.', ',')}% decididas`
+        : `${aprovados.length} de ${data.length} • ${taxaAprovDecididas.toFixed(1).replace('.', ',')}% das decididas`;
+      document.getElementById('kpiTaxaDecididasSub').textContent = detalheAprov;
 
-      document.getElementById('kpiDescConcedido').textContent = formatPct(mediaConc);
-      document.getElementById('kpiDescRangeSub').textContent = concVals.length ? `Mín ${formatPct(minConc)} • Máx ${formatPct(maxConc)}` : 'Sem aprovações no filtro';
+      document.getElementById('kpiDescConcedido').textContent = formatPct(mediaPondConc);
+      document.getElementById('kpiDescRangeSub').textContent = mediaPondConc !== null
+        ? `Ponderado por vidas • Simples: ${formatPct(mediaSimplesConc)}`
+        : 'Sem aprovações no filtro';
 
-      document.getElementById('kpiDescPedido').textContent = formatPct(mediaSol);
-      document.getElementById('kpiSpreadSub').textContent = spreadMedio !== null
-        ? `Calibragem média: ${spreadMedio.toFixed(2).replace('.', ',')} p.p.`
+      document.getElementById('kpiDescPedido').textContent = formatPct(mediaPondSol);
+      document.getElementById('kpiSpreadSub').textContent = diffPond !== null
+        ? `Redução média aprovada: ${diffPond.toFixed(2).replace('.', ',')} p.p.`
         : 'Sem pedidos % no filtro';
 
-      document.getElementById('kpiPendentes').textContent = formatInt(pendentes.length);
-      document.getElementById('kpiVidasPendSub').textContent = `${formatInt(vidasPendentes)} vidas aguardando retorno`;
+      document.getElementById('kpiSinistralidadeAprov').textContent = pctAprovComSin.toFixed(1).replace('.', ',') + '%';
+      document.getElementById('kpiSinistralidadeSub').textContent = aprovados.length
+        ? `${aprovComSin.length} de ${aprovados.length} aprovadas (${formatInt(vidasAprovComSin)} vidas)`
+        : 'Nenhuma aprovação no filtro';
 
-      renderInsights(data, mediaConc, mediaSol, pendentes, vidasPendentes);
-      renderCharts(data, aprovados);
+      const dataSemStatus = getFilteredDataIgnoringStatus();
+      renderInsights(data, aprovados, aprovComSin, vidasAprovComSin, mediaPondConc, mediaPondSol, pendentes, vidasPendentes);
+      renderCharts(data, aprovados, dataSemStatus);
       renderRankingExecutivos(data);
       renderTable(data);
     }
 
-    function renderInsights(data, mediaConc, mediaSol, pendentes, vidasPendentes) {
+    function renderInsights(data, aprovados, aprovComSin, vidasAprovComSin, mediaPondConc, mediaPondSol, pendentes, vidasPendentes) {
       const porUnid = {};
       data.forEach(d => { porUnid[d.unidade] = (porUnid[d.unidade] || 0) + 1; });
       const topUnids = Object.entries(porUnid).sort((a, b) => b[1] - a[1]).slice(0, 2);
       const regText = topUnids.length
-        ? `No recorte atual, <strong class="theme-text-primary">${topUnids[0][0]} (${topUnids[0][1]})</strong>${topUnids[1] ? ` e <strong class="theme-text-primary">${topUnids[1][0]} (${topUnids[1][1]})</strong>` : ''} lideram a demanda de análises enviadas ao Comitê.`
+        ? `No filtro atual, <strong>${topUnids[0][0]} (${topUnids[0][1]})</strong>${topUnids[1] ? ` e <strong>${topUnids[1][0]} (${topUnids[1][1]})</strong>` : ''} concentram a maior parte das cotações enviadas ao comitê.`
         : 'Nenhuma cotação no recorte selecionado.';
 
       document.getElementById('insightsGrid').innerHTML = `
         <div class="theme-card theme-accent-left rounded-2xl p-4 flex items-start gap-3">
-          <div class="theme-soft-icon w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-bold">🛡️</div>
+          <div class="w-8 h-8 rounded-lg theme-soft-pill border flex items-center justify-center shrink-0 font-bold">🛡️</div>
           <div>
-            <h4 class="theme-text-accent-dark text-[11px] font-extrabold uppercase tracking-wider">Disciplina de Precificação</h4>
-            <p class="text-xs text-slate-700 mt-1 leading-relaxed">
-              Descontos aprovados ficam entre <strong class="theme-text-primary">5,00% e 11,89%</strong> (média <strong class="theme-text-primary">${formatPct(mediaConc)}</strong>), preservando margem técnica frente aos pedidos médios de ${formatPct(mediaSol)}.
+            <h4 class="text-[11px] font-extrabold uppercase tracking-wider theme-primary-text">Critério Técnico de Aprovação</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              O desconto médio ponderado por vidas ficou em <strong>${formatPct(mediaPondConc)}</strong> (frente aos ${formatPct(mediaPondSol)} solicitados), com teto máximo aprovado de <strong>11,89%</strong>.
             </p>
           </div>
         </div>
-        <div class="theme-card rounded-2xl p-4 border-l-4 border-l-amber-600 flex items-start gap-3">
-          <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-bold">📍</div>
+        <div class="theme-card rounded-2xl p-4 border-l-4 border-l-sky-600 flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 font-bold">📊</div>
           <div>
-            <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-amber-800">Concentração Regional</h4>
-            <p class="text-xs text-slate-700 mt-1 leading-relaxed">${regText}</p>
+            <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-sky-800">Embasamento de Sinistralidade</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              Entre as <strong>${aprovados.length} cotações aprovadas</strong>, <strong>${aprovComSin.length} (${formatInt(vidasAprovComSin)} vidas)</strong> contavam com sinistralidade ou relatório gerencial apresentado na análise.
+            </p>
           </div>
         </div>
-        <div class="theme-card rounded-2xl p-4 border-l-4 border-l-slate-600 flex items-start gap-3">
-          <div class="w-8 h-8 rounded-lg bg-slate-200 text-slate-800 flex items-center justify-center shrink-0 font-bold">⚠️</div>
+        <div class="theme-card rounded-2xl p-4 border-l-4 border-l-amber-500 flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 font-bold">⏳</div>
           <div>
-            <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-slate-800">Gargalo de Documentação</h4>
-            <p class="text-xs text-slate-700 mt-1 leading-relaxed">
-              <strong class="theme-text-primary">${pendentes.length} cotações (${formatInt(vidasPendentes)} vidas)</strong> aguardam retorno de relatório de sinistralidade ou maiores utilizadores.
+            <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-amber-700">Aguardando Documentação</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              <strong>${pendentes.length} cotações (${formatInt(vidasPendentes)} vidas)</strong> estão pendentes aguardando envio de relatório de sinistralidade ou maiores utilizadores. ${regText}
             </p>
           </div>
         </div>
       `;
     }
 
-    function renderCharts(data, aprovados) {
-      const palette = THEMES[currentTheme] || THEMES.laranja;
-      Chart.defaults.color = palette.tick;
-      Chart.defaults.borderColor = palette.axisBorder;
+    function renderCharts(data, aprovados, dataSemStatus) {
+      const palette = getPalette();
+      const statusOrder = ['Sim', 'Não', 'Pendente'];
+      const statusLabels = ['Aprovado', 'Negado', 'Pendente Retorno'];
+      const baseColors = ['#059669', '#E11D48', '#F59E0B'];
+      const fadedColors = ['rgba(5, 150, 105, 0.24)', 'rgba(225, 29, 72, 0.22)', 'rgba(245, 158, 11, 0.25)'];
+      const activeStatusFilter = selectedChartStatus || document.getElementById('filterStatus').value;
 
-      const statusOrder = ['Sim', 'Não', 'Pendente', 'Não se aplica (Outro pleito)'];
-      const statusLabels = ['Aprovado (Sim)', 'Negado (Não)', 'Pendente Retorno', 'Outro Pleito'];
-      const statusColors = ['#10B981', '#F43F5E', '#F59E0B', palette.accent];
+      const statusColors = statusOrder.map((st, idx) => {
+        if (!activeStatusFilter) return baseColors[idx];
+        return st === activeStatusFilter ? baseColors[idx] : fadedColors[idx];
+      });
 
+      const borderColors = statusOrder.map((st, idx) => {
+        if (activeStatusFilter && st === activeStatusFilter) return baseColors[idx];
+        return 'transparent';
+      });
+
+      const borderWidths = statusOrder.map(st => (activeStatusFilter && st === activeStatusFilter) ? 2 : 0);
+
+      const sourceForFunil = dataSemStatus || data;
       const funilVals = statusOrder.map(st => {
-        const sub = data.filter(d => d.status === st);
+        const sub = sourceForFunil.filter(d => d.status === st);
         return funilMode === 'cotacoes' ? sub.length : sub.reduce((a, b) => a + (b.vidas || 0), 0);
       });
 
@@ -1648,6 +1189,8 @@
           datasets: [{
             data: funilVals,
             backgroundColor: statusColors,
+            borderColor: borderColors,
+            borderWidth: borderWidths,
             borderRadius: 8,
             barThickness: 26
           }]
@@ -1656,19 +1199,48 @@
           indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
+          onHover: (event, elements) => {
+            if (event && event.native && event.native.target) {
+              event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+            }
+          },
+          onClick: (event, elements) => {
+            if (!elements || elements.length === 0) return;
+            const idx = elements[0].index;
+            const clickedSt = statusOrder[idx];
+            if (selectedChartStatus === clickedSt) {
+              selectedChartStatus = '';
+              document.getElementById('filterStatus').value = '';
+            } else {
+              selectedChartStatus = clickedSt;
+              document.getElementById('filterStatus').value = clickedSt;
+            }
+            updateDashboard();
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
               callbacks: {
-                label: ctx => funilMode === 'cotacoes'
-                  ? ` ${ctx.raw} cotações`
-                  : ` ${formatInt(ctx.raw)} vidas`
+                afterLabel: ctx => {
+                  const st = statusOrder[ctx.dataIndex];
+                  return selectedChartStatus === st
+                    ? ' (Clique para remover filtro)'
+                    : ' (Clique na barra para filtrar o painel)';
+                },
+                label: ctx => {
+                  const base = funilMode === 'cotacoes' ? ` ${ctx.raw} cotações` : ` ${formatInt(ctx.raw)} vidas`;
+                  if (ctx.dataIndex === 0) {
+                    const condCnt = sourceForFunil.filter(d => d.status === 'Sim' && d.isCondicaoComercial).length;
+                    if (condCnt > 0) return `${base} (inclui ${condCnt} pleito de vigência s/ desconto)`;
+                  }
+                  return base;
+                }
               }
             }
           },
           scales: {
-            x: { grid: { color: palette.grid }, ticks: { color: palette.tick, font: { size: 11 } } },
-            y: { grid: { display: false }, ticks: { color: palette.tickPrimary, font: { size: 11, weight: '600' } } }
+            x: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 11 } } },
+            y: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } }
           }
         }
       });
@@ -1689,7 +1261,7 @@
             {
               label: '% Concedido',
               data: elastRows.map(d => d.percConcedido),
-              backgroundColor: palette.accent,
+              backgroundColor: palette.primary,
               borderRadius: 6
             }
           ]
@@ -1698,14 +1270,27 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'top', labels: { color: palette.tickPrimary, usePointStyle: true, font: { size: 11, weight: '600' } } },
-            tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw !== null ? ctx.raw + '%' : 'Valor-alvo (R$)'}` } }
+            legend: { position: 'top', labels: { usePointStyle: true, font: { size: 11, weight: '600' } } },
+            tooltip: {
+              callbacks: {
+                afterBody: items => {
+                  const idx = items[0].dataIndex;
+                  const row = elastRows[idx];
+                  if (!row) return '';
+                  const sinTxt = row.sinistralidadeInfo === 'Sim'
+                    ? `Sinistralidade: Sim${row.percSinistralidade !== null ? ' (' + formatPct(row.percSinistralidade) + ')' : ''}`
+                    : 'Sinistralidade: Não informada';
+                  return [`Vidas: ${row.vidasTexto}`, sinTxt];
+                },
+                label: ctx => ` ${ctx.dataset.label}: ${ctx.raw !== null ? ctx.raw + '%' : 'Valor-alvo (R$)'}`
+              }
+            }
           },
           scales: {
-            x: { grid: { display: false }, ticks: { color: palette.tick, font: { size: 10 } } },
+            x: { grid: { display: false }, ticks: { font: { size: 10 } } },
             y: {
-              grid: { color: palette.grid },
-              ticks: { color: palette.tick, callback: v => v + '%', font: { size: 11 } },
+              grid: { color: '#F1F5F9' },
+              ticks: { callback: v => v + '%', font: { size: 11 } },
               suggestedMax: 32
             }
           }
@@ -1726,17 +1311,17 @@
         data: {
           labels: unidKeys,
           datasets: [
-            { label: 'Total Pleitos', data: unidKeys.map(k => unidMap[k].tot), backgroundColor: palette.secondary, borderRadius: 6 },
-            { label: 'Aprovados', data: unidKeys.map(k => unidMap[k].apr), backgroundColor: palette.accent, borderRadius: 6 }
+            { label: 'Total Pleitos', data: unidKeys.map(k => unidMap[k].tot), backgroundColor: palette.secondarySoft, borderRadius: 6 },
+            { label: 'Aprovados', data: unidKeys.map(k => unidMap[k].apr), backgroundColor: palette.primary, borderRadius: 6 }
           ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'top', labels: { color: palette.tickPrimary, usePointStyle: true, font: { size: 11 } } } },
+          plugins: { legend: { position: 'top', labels: { usePointStyle: true, font: { size: 11 } } } },
           scales: {
-            x: { grid: { display: false }, ticks: { color: palette.tick, font: { size: 11 } } },
-            y: { grid: { color: palette.grid }, ticks: { color: palette.tick, stepSize: 2, font: { size: 11 } } }
+            x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+            y: { grid: { color: '#F1F5F9' }, ticks: { stepSize: 2, font: { size: 11 } } }
           }
         }
       });
@@ -1750,7 +1335,7 @@
       const mesKeys = Object.keys(mesMap).sort();
       const mesLabels = mesKeys.map(m => {
         const [y, mm] = m.split('-');
-        const mapN = { '07': 'Jul', '08': 'Ago', '09': 'Set', '10': 'Out', '11': 'Nov', '12': 'Dez' };
+        const mapN = { '01': 'Jan', '02': 'Fev', '03': 'Mar', '04': 'Abr', '05': 'Mai', '06': 'Jun', '07': 'Jul', '08': 'Ago', '09': 'Set', '10': 'Out', '11': 'Nov', '12': 'Dez' };
         return `${mapN[mm] || mm}/${y.slice(2)}`;
       });
 
@@ -1763,8 +1348,8 @@
             {
               label: 'Cotações Analisadas',
               data: mesKeys.map(k => mesMap[k].tot),
-              borderColor: '#78716C',
-              backgroundColor: palette.lineBg,
+              borderColor: palette.darkLine,
+              backgroundColor: palette.darkFill,
               tension: 0.35,
               fill: true,
               pointRadius: 4
@@ -1772,8 +1357,8 @@
             {
               label: 'Aprovadas',
               data: mesKeys.map(k => mesMap[k].apr),
-              borderColor: palette.accent,
-              backgroundColor: palette.accent,
+              borderColor: palette.primary,
+              backgroundColor: palette.primary,
               tension: 0.35,
               pointRadius: 4
             }
@@ -1782,10 +1367,10 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'top', labels: { color: palette.tickPrimary, usePointStyle: true, font: { size: 11 } } } },
+          plugins: { legend: { position: 'top', labels: { usePointStyle: true, font: { size: 11 } } } },
           scales: {
-            x: { grid: { display: false }, ticks: { color: palette.tick, font: { size: 11 } } },
-            y: { grid: { color: palette.grid }, beginAtZero: true, ticks: { color: palette.tick, stepSize: 2, font: { size: 11 } } }
+            x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+            y: { grid: { color: '#F1F5F9' }, beginAtZero: true, ticks: { stepSize: 2, font: { size: 11 } } }
           }
         }
       });
@@ -1805,17 +1390,17 @@
       container.innerHTML = sorted.map(([nome, st]) => {
         const pct = st.tot ? Math.round((st.apr / st.tot) * 100) : 0;
         return `
-          <div class="theme-border-card p-2.5 rounded-xl bg-white border">
-            <div class="theme-text-primary flex items-center justify-between text-xs font-bold">
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-800">
               <span class="truncate pr-2">${nome}</span>
-              <span class="theme-text-accent shrink-0">${st.apr}/${st.tot} aprov.</span>
+              <span class="theme-primary-text shrink-0">${st.apr}/${st.tot} aprov.</span>
             </div>
-            <div class="w-full h-1.5 rounded-full mt-1.5 overflow-hidden" style="background: var(--soft-tint);">
-              <div class="h-full rounded-full" style="width: ${pct}%; background: var(--accent);"></div>
+            <div class="w-full bg-slate-200 h-1.5 rounded-full mt-1.5 overflow-hidden">
+              <div class="theme-primary-bg h-full rounded-full" style="width: ${pct}%"></div>
             </div>
-            <div class="theme-text-muted flex justify-between text-[10px] mt-1">
+            <div class="flex justify-between text-[10px] text-slate-500 mt-1">
               <span>${formatInt(st.vidas)} vidas</span>
-              <span>Taxa: ${pct}%</span>
+              <span>Aprovação: ${pct}%</span>
             </div>
           </div>
         `;
@@ -1823,36 +1408,52 @@
     }
 
     function renderTable(data) {
+      const sorted = getSortedData(data);
+      currentTableData = sorted;
+      updateSortIcons();
       const tbody = document.getElementById('tabelaCorpo');
-      tbody.innerHTML = data.map((d, idx) => {
+      tbody.innerHTML = sorted.map((d, idx) => {
         let badgeCls = 'badge-pendente';
-        if (d.status === 'Sim') badgeCls = 'badge-sim';
-        else if (d.status === 'Não') badgeCls = 'badge-nao';
-        else if (d.status.indexOf('Outro') !== -1) badgeCls = 'badge-outro';
+        let badgeLabel = d.status === 'Sim' ? 'Aprovado' : (d.status === 'Não' ? 'Negado' : d.status);
+        let badgeTitle = '';
+        if (d.status === 'Sim') {
+          badgeCls = 'badge-sim';
+          if (d.isCondicaoComercial) {
+            badgeLabel = 'Aprovado ⓘ';
+            badgeTitle = 'Pleito de condição comercial / vigência aprovado sem desconto financeiro (não entra na média de % concedido)';
+          }
+        } else if (d.status === 'Não') {
+          badgeCls = 'badge-nao';
+        }
+
+        const sinBadge = d.sinistralidadeInfo === 'Sim'
+          ? `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold badge-sin-sim">Sim${d.percSinistralidade !== null ? ' (' + formatPct(d.percSinistralidade) + ')' : ''}</span>`
+          : `<span class="px-2 py-0.5 rounded-full text-[11px] font-semibold badge-sin-nao">Não</span>`;
 
         return `
           <tr class="theme-row-hover transition">
             <td class="py-3 px-4 font-semibold text-slate-700 whitespace-nowrap">${d.dataReuniao}</td>
-            <td class="theme-text-primary py-3 px-4 font-bold whitespace-nowrap">${d.cotacao}</td>
+            <td class="py-3 px-4 font-bold text-slate-900 whitespace-nowrap">${d.cotacao}</td>
             <td class="py-3 px-4">
-              <div class="theme-text-primary font-bold">${d.empresa}</div>
-              <div class="theme-text-muted text-[11px]">${d.corretora}</div>
+              <div class="font-bold text-slate-900">${d.empresa}</div>
+              <div class="text-[11px] text-slate-500">${d.corretora}</div>
             </td>
             <td class="py-3 px-4">
               <div class="font-semibold text-slate-800">${d.unidade}</div>
-              <div class="theme-text-muted text-[11px]">${d.gerente} • ${d.executivo}</div>
+              <div class="text-[11px] text-slate-500">${d.gerente} • ${d.executivo}</div>
             </td>
             <td class="py-3 px-4 text-right font-bold text-slate-800 whitespace-nowrap">${d.vidasTexto}</td>
             <td class="py-3 px-4 text-slate-700">${d.produto}</td>
-            <td class="theme-text-primary py-3 px-4 font-bold">${d.pleitoResumo}</td>
+            <td class="py-3 px-4 text-center whitespace-nowrap">${sinBadge}</td>
+            <td class="py-3 px-4 font-bold text-slate-900">${d.pleitoResumo}</td>
             <td class="py-3 px-4 text-center whitespace-nowrap">
-              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold ${badgeCls}">${d.status}</span>
+              <span title="${badgeTitle}" class="px-2.5 py-1 rounded-full text-[11px] font-bold ${badgeCls} ${d.isCondicaoComercial ? 'cursor-help' : ''}">${badgeLabel}</span>
             </td>
-            <td class="py-3 px-4 text-center font-extrabold ${d.percConcedido !== null ? 'theme-text-accent' : 'text-slate-400'}">
+            <td class="py-3 px-4 text-center font-extrabold ${d.percConcedido !== null ? 'theme-primary-text' : 'text-slate-400'}">
               ${formatPct(d.percConcedido)}
             </td>
             <td class="py-3 px-4 text-center">
-              <button onclick="abrirModal(${idx})" class="theme-ata-btn px-2.5 py-1 rounded-lg font-bold text-[11px] transition cursor-pointer">
+              <button onclick="abrirModal(${idx})" class="px-3 py-1.5 rounded-lg theme-ver-ata-btn font-bold text-[11px] cursor-pointer">
                 Ver ata
               </button>
             </td>
@@ -1862,14 +1463,16 @@
     }
 
     window.abrirModal = function(idx) {
-      const data = getFilteredData();
-      const d = data[idx];
+      const d = currentTableData[idx];
       if (!d) return;
       document.getElementById('modalMeta').textContent = `Reunião ${d.dataReuniao} • Unidade ${d.unidade}`;
       document.getElementById('modalEmpresa').textContent = d.empresa;
       document.getElementById('mCotacao').textContent = d.cotacao;
       document.getElementById('mVidas').textContent = d.vidasTexto;
       document.getElementById('mProduto').textContent = d.produto;
+      document.getElementById('mSinistralidade').textContent = d.sinistralidadeInfo === 'Sim'
+        ? `Sim${d.percSinistralidade !== null ? ' (' + formatPct(d.percSinistralidade) + ')' : ''}`
+        : 'Não informada';
       document.getElementById('mCorretora').textContent = d.corretora;
       document.getElementById('mPleito').textContent = d.pleito;
       document.getElementById('mDeliberacao').textContent = d.deliberacao;
@@ -1891,50 +1494,43 @@
       }
     });
 
-    function syncFunilButtons() {
-      const btnCot = document.getElementById('btnFunilCot');
-      const btnVid = document.getElementById('btnFunilVidas');
-      if (funilMode === 'cotacoes') {
-        btnCot.className = 'theme-btn-primary px-2.5 py-1 rounded-md shadow-xs cursor-pointer';
-        btnVid.className = 'theme-text-label px-2.5 py-1 rounded-md cursor-pointer';
-      } else {
-        btnVid.className = 'theme-btn-primary px-2.5 py-1 rounded-md shadow-xs cursor-pointer';
-        btnCot.className = 'theme-text-label px-2.5 py-1 rounded-md cursor-pointer';
-      }
-    }
-
     document.getElementById('btnFunilCot').addEventListener('click', () => {
       funilMode = 'cotacoes';
-      syncFunilButtons();
+      document.getElementById('btnFunilCot').className = 'px-2.5 py-1 rounded-md bg-white theme-primary-text shadow-sm';
+      document.getElementById('btnFunilVidas').className = 'px-2.5 py-1 rounded-md text-slate-600';
       updateDashboard();
     });
 
     document.getElementById('btnFunilVidas').addEventListener('click', () => {
       funilMode = 'vidas';
-      syncFunilButtons();
+      document.getElementById('btnFunilVidas').className = 'px-2.5 py-1 rounded-md bg-white theme-primary-text shadow-sm';
+      document.getElementById('btnFunilCot').className = 'px-2.5 py-1 rounded-md text-slate-600';
       updateDashboard();
     });
 
-    document.querySelectorAll('[data-theme-select]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        applyTheme(btn.getAttribute('data-theme-select'));
-      });
-    });
-
-    ['filterUnidade', 'filterGerente', 'filterExecutivo', 'filterStatus', 'filterMes'].forEach(id => {
+    ['filterUnidade', 'filterGerente', 'filterExecutivo', 'filterSinistralidade', 'filterMes'].forEach(id => {
       document.getElementById(id).addEventListener('change', updateDashboard);
     });
-    document.getElementById('filterBusca').addEventListener('input', updateDashboard);
-
-    document.getElementById('btnResetFilters').addEventListener('click', () => {
-      ['filterUnidade', 'filterGerente', 'filterExecutivo', 'filterStatus', 'filterMes', 'filterBusca'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
+    document.getElementById('filterStatus').addEventListener('change', (e) => {
+      selectedChartStatus = e.target.value;
       updateDashboard();
     });
+    document.getElementById('filterBusca').addEventListener('input', updateDashboard);
+    document.getElementById('sortSelector').addEventListener('change', (e) => {
+      currentSortKey = e.target.value;
+      renderTable(getFilteredData());
+    });
 
-    populateFilters();
-    syncFunilButtons();
+    document.getElementById('btnResetFilters').addEventListener('click', () => {
+      ['filterUnidade', 'filterGerente', 'filterExecutivo', 'filterStatus', 'filterSinistralidade', 'filterMes', 'filterBusca'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      selectedChartStatus = '';
+      currentSortKey = 'data_desc';
+      document.getElementById('sortSelector').value = 'data_desc';
+      updateDashboard();
+    });
+populateFilters();
     updateDashboard();
   </script>
 </body>
